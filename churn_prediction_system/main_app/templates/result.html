@@ -1,0 +1,140 @@
+{%  include 'base.html' %}
+{% block content %}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript">
+    google.charts.load("current", {packages:['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ["Element", "Density", { role: "style" } ],
+        ["Copper", 8.94, "#b87333"],
+        ["Silver", 10.49, "silver"],
+        ["Gold", 19.30, "gold"],
+        ["Platinum", 21.45, "color: #e5e4e2"]
+      ]);
+
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },
+                       2]);
+
+      var options = {
+        title: "Density of Precious Metals, in g/cm^3",
+        width: 600,
+        height: 400,
+        bar: {groupWidth: "95%"},
+        legend: { position: "none" },
+      };
+      var chart = new google.visualization.ColumnChart(document.getElementById("chart1"));
+      chart.draw(view, options);
+  }
+  </script>
+   <script type="text/javascript">
+    google.charts.load("current", {packages:['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ["Element", "Density", { role: "style" } ],
+        ["Copper", 8.94, "#b87333"],
+        ["Silver", 10.49, "silver"],
+        ["Gold", 19.30, "gold"],
+        ["Platinum", 21.45, "color: #e5e4e2"]
+      ]);
+
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },
+                       2]);
+
+      var options = {
+        title: "Density of Precious Metals, in g/cm^3",
+        width: 600,
+        height: 400,
+        bar: {groupWidth: "95%"},
+        legend: { position: "none" },
+      };
+      var chart = new google.visualization.ColumnChart(document.getElementById("chart2"));
+      chart.draw(view, options);
+  }
+  </script>
+   <script type="text/javascript">
+    google.charts.load("current", {packages:['corechart']});
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+      var data = google.visualization.arrayToDataTable([
+        ["Element", "Density", { role: "style" } ],
+        ["Copper", 8.94, "#b87333"],
+        ["Silver", 10.49, "silver"],
+        ["Gold", 19.30, "gold"],
+        ["Platinum", 21.45, "color: #e5e4e2"]
+      ]);
+
+      var view = new google.visualization.DataView(data);
+      view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" },
+                       2]);
+
+      var options = {
+        title: "Density of Precious Metals, in g/cm^3",
+        width: 600,
+        height: 400,
+        bar: {groupWidth: "95%"},
+        legend: { position: "none" },
+      };
+      var chart = new google.visualization.ColumnChart(document.getElementById("chart3"));
+      chart.draw(view, options);
+  }
+  </script>
+
+<div class="w-100 popup2 grid">
+    <form action="post_print_result" method="POST">
+    <input type="hidden" name="current_id" value="current_id">
+    <h3 align='center'>Result</h3>
+    <div style="display: flex;">
+        <div style="width: 30%;  height: 100vh;">
+            <h5>Demographics</h5>
+            <ul class="group-list">
+                <li><b>Customer</b>: {{customer}}</li>
+                <li><b>Gender</b>: {{gender}}</li>
+                <li><b>Senior Citizen</b>: {{senior_citizen}}</li>
+                <li><b>Partner</b>: {{partner}}</li>
+                <li><b>Depender</b>: {{depender}}</li>
+            </ul>
+            <h5>Services</h5>
+            <ul class="group-list">
+                <li><b>Tenure</b>: {{tenure}}</li>
+                <li><b>Phone Service</b>: {{phone_service}}</li>
+                <li><b>Multiple Lines</b>: {{multiple_lines}}</li>
+                <li><b>Internet Service</b>: {{internet_service}}</li>
+                <li><b>Online Security</b>: {{online_security}}</li>
+                <li><b>Online Backup</b>: {{online_backup}}</li>
+                <li><b>Device Protection</b>: {{device_protection}}</li>
+                <li><b>Tech Support</b>: {{tech_support}}</li>
+                <li><b>Streaming TV</b>: {{streaming_tv}}</li>
+                <li><b>Streaming Movies</b>: {{streaming_movie}}</li>
+                <li><b>Contract</b>: {{contract}}</li>
+                <li><b>Paperless Billing</b>: {{paperless_billing}}</li>
+                <li><b>Payment Method</b>: {{payment_method}}</li>
+                <li><b>Monthly Charges</b>: {{monthly_charges}}</li>
+                <li><b>Total Charges</b>: {{total_charges}}</li>
+            </ul>
+        </div>
+        <div style="width: 70%; height: 100vh;" >
+            <div style="float: left;"><div id="chart1" style="width: 50%; height: 500px;"></div></div>
+            <div style="float: left;"><div id="chart2" style="width:  50%; height: 500px;;"></div></div>
+            <div style="float: left;"><div id="chart3" style="width:  50%; height: 500px;"></div></div>
+        </div>
+    </div>
+</form>
+</div>
+
+{% endblock %}

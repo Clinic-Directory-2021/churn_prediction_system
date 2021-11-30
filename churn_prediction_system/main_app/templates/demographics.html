@@ -1,0 +1,58 @@
+{%  include 'base.html' %}
+{% block content %}
+<div class="w-50 p-10 popup">
+    <h3 align='center'>Demographics</h3>
+    <form action="/post_get_demographics/" method="POST">
+        {%  csrf_token %}
+        <div class="row mb-2">
+            <label class="cell-sm-2">Customer</label>
+            <div class="cell-sm-10">
+                <input type="text" class="metro-input" placeholder="Enter Customer" name="customer">
+            </div>
+        </div>
+        <div class="row mb-2">
+            <label class="cell-sm-2">Gender</label>
+            <div class="cell-sm-10">
+            <select data-role="select" title="" name="gender">
+                <option value="Male" data-template="<span class='mif-male icon'></span> $1">Male</option>
+                <option value="Female" data-template="<span class='mif-female icon'></span> $1">Female</option>
+            </select>
+             </div>
+        </div>
+        <div class="row mb-2">
+            <label class="cell-sm-2">Senior Citizen</label>
+            <div class="cell-sm-10">
+                <select data-role="select" title="" name="senior_citizen">
+                    <option value="Male" data-template="<span class='mif-checkmark icon'></span> $1">Yes</option>
+                    <option value="Female" data-template="<span class='mif-cross icon'></span> $1">No</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <label class="cell-sm-2">Partner</label>
+            <div class="cell-sm-10">
+                <select data-role="select" title="" name="partner">
+                    <option value="Yes" data-template="<span class='mif-checkmark icon'></span> $1">Yes</option>
+                    <option value="No" data-template="<span class='mif-cross icon'></span> $1">No</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <label class="cell-sm-2">Depender</label>
+            <div class="cell-sm-10">
+                <select data-role="select" title="" name="depender">
+                    <option value="Yes" data-template="<span class='mif-checkmark icon'></span> $1">Yes</option>
+                    <option value="No" data-template="<span class='mif-cross icon'></span> $1">No</option>
+                </select>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <label class="cell-sm-2"></label>
+            <div class="cell-sm-10">
+                <button class="button success">Next</button>
+            </div>
+        </div>
+    </form> 
+</div>
+
+{% endblock %}

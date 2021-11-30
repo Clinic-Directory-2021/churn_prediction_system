@@ -1,0 +1,160 @@
+{%  include 'base.html' %}
+{% block content %}
+<div class="w-100 popup2 grid">
+    <h3 align='center'>Services</h3>
+    <form action="/post_get_services/" method="POST">
+        {%  csrf_token %}
+        <div class="row">
+            <div class="cell">
+                <div class="row mb-2">
+                    <label class="cell-sm-2">Tenure</label>
+                    <div class="cell-sm-10">
+                        <input type="number" class="metro-input" data-role= "spinner" placeholder="Enter Tenure" name="tenure">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label class="cell-sm-2">Phone Service</label>
+                    <div class="cell-sm-10">
+                        <select data-role="select" title="" name="phone_service">
+                            <option value="Yes" data-template="<span class='mif-checkmark icon'></span> $1">Yes</option>
+                            <option value="No" data-template="<span class='mif-cross icon'></span> $1">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label class="cell-sm-2">Multiple Lines</label>
+                    <div class="cell-sm-10">
+                        <select data-role="select" title="" name="multiple_lines">
+                            <option value="Yes" data-template="<span class='mif-checkmark icon'></span> $1">Yes</option>
+                            <option value="No" data-template="<span class='mif-cross icon'></span> $1">No</option>
+                            <option value="No Phone" data-template="<span class='mif-phonelink-erase icon'></span> $1">No Phone</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label class="cell-sm-2">Internet Service</label>
+                    <div class="cell-sm-10">
+                        <select data-role="select" title="" name="internet_service">
+                            <option value="DSL">DSL</option>
+                            <option value="Fiber">Fiber Optic</option>
+                            <option value="No">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label class="cell-sm-2">Online Security</label>
+                    <div class="cell-sm-10">
+                        <select data-role="select" title="" name="online_security">
+                            <option value="Yes" data-template="<span class='mif-checkmark icon'></span> $1">Yes</option>
+                            <option value="No" data-template="<span class='mif-cross icon'></span> $1">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="cell">
+                <div class="row mb-2">
+                    <label class="cell-sm-2">Online Backup</label>
+                    <div class="cell-sm-10">
+                        <select data-role="select" title="" name="online_backup">
+                            <option value="Yes" data-template="<span class='mif-checkmark icon'></span> $1">Yes</option>
+                            <option value="No" data-template="<span class='mif-cross icon'></span> $1">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label class="cell-sm-2">Device Protection</label>
+                    <div class="cell-sm-10">
+                        <select data-role="select" title="" name="device_protection">
+                            <option value="Yes" data-template="<span class='mif-checkmark icon'></span> $1">Yes</option>
+                            <option value="No" data-template="<span class='mif-cross icon'></span> $1">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label class="cell-sm-2">Tech Support</label>
+                    <div class="cell-sm-10">
+                        <select data-role="select" title="" name="tech_support">
+                            <option value="Yes" data-template="<span class='mif-checkmark icon'></span> $1">Yes</option>
+                            <option value="No" data-template="<span class='mif-cross icon'></span> $1">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label class="cell-sm-2">Streaming TV</label>
+                    <div class="cell-sm-10">
+                        <select data-role="select" title="" name="streaming_tv">
+                            <option value="Yes" data-template="<span class='mif-checkmark icon'></span> $1">Yes</option>
+                            <option value="No" data-template="<span class='mif-cross icon'></span> $1">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label class="cell-sm-2">Streaming Movies</label>
+                    <div class="cell-sm-10">
+                        <select data-role="select" title="" name="streaming_movie">
+                            <option value="Yes" data-template="<span class='mif-checkmark icon'></span> $1">Yes</option>
+                            <option value="No" data-template="<span class='mif-cross icon'></span> $1">No</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="cell">
+                <div class="row mb-2">
+                    <label class="cell-sm-2">Contract</label>
+                    <div class="cell-sm-10">
+                        <select data-role="select" title="" name="contract">
+                            <option value="Yes">Month-To-Month</option>
+                            <option value="No">One Year</option>
+                            <option value="No">Two Year</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label class="cell-sm-2">Paperless Billing</label>
+                    <div class="cell-sm-10">
+                        <select data-role="select" title="" name="paperless_billing">
+                            <option value="Yes" data-template="<span class='mif-checkmark icon'></span> $1">Yes</option>
+                            <option value="No" data-template="<span class='mif-cross icon'></span> $1">No</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label class="cell-sm-2">Payment Method</label>
+                    <div class="cell-sm-10">
+                        <select data-role="select" title="" name="payment_method">
+                            <option value="Yes">Electronic Check</option>
+                            <option value="No">Bank transfer (automatic)</option>
+                            <option value="No">Credit card (automatic)</option>
+                            <option value="No">Mailed Check</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label class="cell-sm-2">Monthly Charges</label>
+                    <div class="cell-sm-10">
+                        <input type="number" data-role="spinner" class="metro-input" placeholder="Enter Monthly Charges" name="monthly_charges">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label class="cell-sm-2">Total Charges</label>
+                    <div class="cell-sm-10">
+                        <input type="number" data-role="spinner" class="metro-input" placeholder="Enter Total Charges" name="total_charges">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label class="cell-sm-2"></label>
+                    <div class="cell-sm-10">
+                        <button class="button primary">Show Result</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="current_id" value="{{current_id}}" id="current_id">
+    </form>
+</div>
+
+{% endblock %}
