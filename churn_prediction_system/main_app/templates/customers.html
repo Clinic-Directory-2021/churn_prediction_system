@@ -1,0 +1,29 @@
+{% if request.session.type == 'admin' %}
+{%  include 'home_base.html' %}
+{% elif request.session.type == 'user' %}
+{%  include 'home_base_user.html' %}
+{% endif %}
+{% block content %}
+<div class="p-5">
+<table class="table striped table-border cell-border" data-role="table" data-show-pagination="true"  >
+    <thead>
+        <tr>
+            <th class="sortable-column sort-asc">#</th>
+            <th class="sortable-column sort-asc">First Name</th>
+            <th class="sortable-column sort-asc">Last Name</th>
+            <th class="sortable-column sort-asc">Username</th>
+        </tr>
+        </thead>
+        <tbody class="row-hover">
+            {%  for data in visuals %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{data.customer}}</td>
+            <td>{{data.depender}}</td>
+            <td>{{data.senior_citizen}}</td>
+        </tr>
+            {%  endfor %}
+        </tbody>
+</table>
+</div>
+{% endblock %}

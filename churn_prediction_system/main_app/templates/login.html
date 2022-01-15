@@ -1,0 +1,29 @@
+{%  include 'base.html' %}
+{% if validation %}
+<script>
+    swal("Error.","{{validation}}", "error");
+</script>
+{% endif %}
+{% block content %}
+<div class="center bg-white border-radius-5 p-5" style="opacity: 0.9; box-shadow: 0 0 5px green;">
+    <h3 align="center">Login As Admin</h3>
+<form action="/post_login/" method="POST">
+    {% csrf_token %}
+    <div class="form-group">
+        <input type="text" data-role="input" name="username" placeholder="Username"
+    data-prepend="<span class='mif-user'></span>">
+    </div>
+    <div class="form-group">
+        <input type="password" data-role="input" name="password" placeholder="Password"
+    data-prepend="<span class='mif-lock'></span>">
+    </div>
+    <div class="form-group">
+        <div class="form-group">
+            <button type="submit" class="button success w-100" id="loginBtn">Login</button>
+        </div>
+    </div>
+</form>
+<br>
+Login<a href="{% url 'login_user' %}"> Here </a>as User
+</div>
+{% endblock %}

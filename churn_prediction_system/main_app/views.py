@@ -28,10 +28,43 @@ config = {
 firebase = pyrebase.initialize_app(config)
 cred = credentials.Certificate("main_app/serviceAccountKey.json")
 firebase_admin.initialize_app(cred)
+authe = firebase.auth()
   
 firestoreDB = firestore.client()
 
 # Create your views here.
+def login(request):
+    return render(request,'login.html')
+def post_login(request):
+    request.session['type'] = 'admin'
+    username = request.POST.get('username')
+    password = request.POST.get('password')
+    if username == 'admin' and password == 'admin':
+        return render(request,'dashboard.html')
+    else:
+        return render(request,'login.html',{'validation':'Username or Password is incorrect'})
+def logout(request):
+    return render(request,'login.html')
+
+def login_user(request):
+    return render(request,'login_user.html')
+
+def dashboard(request):
+    return render(request,'dashboard.html')
+
+def customers(request):
+    try:
+        visuals = firestoreDB.collection(u'visuals').get()
+        return render(request,'customers.html',{'visuals':[data.to_dict() for data in visuals]})
+    except:
+        return render(request,'customers.html')
+
+def manage_users(request):
+    try:
+        users = firestoreDB.collection(u'users').get()
+        return render(request,'manage_users.html',{'users':[data.to_dict() for data in users]})
+    except:
+        return render(request,'manage_users.html')
 def demographics(request):
     return render(request,'demographics.html')
 
@@ -156,4 +189,48 @@ def post_get_services(request):
         return render(request,'result.html',pass_data)
     return render(request, 'result.html')
 
+def post_add_user(request):
+    first_name = request.POST.get('last_name')
+    last_name = request.POST.get('last_name')
+    password = str(first_name) + "_" + str(last_name)
+    email = request.POST.get('email')
+    create = request.POST.get('create')
+    cancel = request.POST.get('cancel')
+    date_created = datetime.now()
+    user_id =  calendar.timegm(date_created.timetuple())
+    if 'create' in request.POST:
+        try:
+            user = authe.create_user_with_email_and_password(email,password)
+            data = {
+                u'first_name': first_name,
+                u'last_name': last_name,
+                u'email': email,
+                u'status': 'active',
+                u'uid':str(user['idToken'])
+            }
+            firestoreDB.collection(u'users').document(str(user_id)).set(data)
+            users = firestoreDB.collection(u'users').get()
+            return render(request,'manage_users.html',{'users':[data.to_dict() for data in users],"validation_success":"Successfully Add "+first_name + " " + last_name +" as User."})
+        except Exception as e:
+           return render(request,'manage_users.html',{'validation':"Email not found"})
+    try:
+        users = firestoreDB.collection(u'users').get()
+        return render(request,'manage_users.html',{'users':[data.to_dict() for data in users]})
+    except:
+        return render(request,'manage_users.html')
+
+def post_login_user(request):
+    request.session['type'] = 'user'
+    email=request.POST.get('email')
+    pasw=request.POST.get('password')
+
+    try:
+        # if there is no error then signin the user with given email and password
+        user=authe.sign_in_with_email_and_password(email,pasw)
+    except:
+        message="Invalid Credentials !! Please ChecK your Data"
+        return render(request,"login_user.html",{"validation":message})
+    session_id=user['idToken']
+    request.session['uid']=str(session_id)
+    return render(request,"dashboard.html")
     

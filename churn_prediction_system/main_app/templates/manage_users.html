@@ -1,0 +1,71 @@
+{%  include 'home_base.html' %}
+{% if validation %}
+<script>
+    swal("Error.","{{validation}}", "error");
+</script>
+{% elif validation_success %}
+<script>
+    swal("Error.","{{validation_success}}", "success");
+</script>
+{% endif %}
+{% block content %}
+<div class="p-5">
+<button class="button primary mif-add icon" onclick="Metro.dialog.open('#add_user_dialog')"> Add User</button>
+<br>
+<br>
+<table class="table striped table-border cell-border" data-role="table" data-show-pagination="true"  >
+    <thead>
+        <tr>
+            <th class="sortable-column sort-asc">#</th>
+            <th class="sortable-column sort-asc">First Name</th>
+            <th class="sortable-column sort-asc">Last Name</th>
+            <th class="sortable-column sort-asc">Email</th>
+            <th class="sortable-column sort-asc">Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+            {%  for data in users %}
+        <tr class="row-hover">
+            <td>{{forloop.counter}}</td>
+            <td>{{data.first_name}}</td>
+            <td>{{data.last_name}}</td>
+            <td>{{data.status}}</td>
+            <td>{{data.email}}</td>
+            <td>
+                <button class="button success">Edit</button>
+                <button class="button alert">Delete</button>
+            </td>
+        </tr>
+            {%  endfor %}
+        </tbody>
+</table>
+</div>
+
+<div class="dialog" data-role="dialog" id="add_user_dialog" style="border-color: #3CB371;">
+    <form action="/post_add_user/" method="POST">
+    <div class="dialog-title" style="background-color:#3CB371;"><span class='mif-pencil'></span> CREATE USER DIALOG</div>
+    <div class="dialog-content">
+        
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" data-role="input" name="first_name" placeholder="First Name"
+            data-prepend="<span class='mif-user'></span>">
+            </div>
+            <div class="form-group">
+                <input type="text" data-role="input" name="last_name" placeholder="Last Name"
+            data-prepend="<span class='mif-user'></span>">
+            </div>
+            <div class="form-group">
+                <input type="email" data-role="input" name="email" placeholder="Email"
+            data-prepend="<span class='mif-envelop'></span>">
+            </div>
+        
+    </div>
+    <div class="dialog-actions">
+        <button class="button alert js-dialog-close" name="cancel">Cancel</button>
+        <button class="button" style="background-color: #3CB371; color: white;" name="create" type="submit">Create User</button>
+    </div>
+</form>
+</div>
+{% endblock %}

@@ -13,6 +13,9 @@
     <link rel="stylesheet" href="{% static 'css/login.css'%}">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <style>
+    *{
+        font-family: Arial, Helvetica, sans-serif;
+    }
 .popup {
     position: fixed;
     top: 50%;
@@ -38,34 +41,32 @@
     }
 </script>
 </head>
-<body class="p-5">
+<body>
+    
+
     <div data-role="appbar" data-expand-point="md" style="background-color:#3CB371;" class="head">
-    <!-- <a href="#" class="brand no-hover">
+     <!-- <a href="#" class="brand no-hover">
         <span style="width: 55px;" class="p-2 border bd-dark border-radius">
             
         </span>
-    </a>
-
-    <ul class="app-bar-menu">
-        <li><a href="#">Home</a></li>
-        <li>
-            <a href="#" class="dropdown-toggle">Products</a>
-            <ul class="d-menu" data-role="dropdown">
-                <li><a href="#">Windows 10</a></li>
-                <li><a href="#">Office 365</a></li>
-                <li class="divider bg-lightGray"></li>
-                <li><a href="#">Skype</a></li>
-                 </ul>
-        </li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">Contacts</a></li>
-    </ul> -->
+    </a> -->
     <input type="checkbox" data-role="switch" onclick="toggleInputState(this)">
     Dark Mode 
+
+     <ul class="app-bar-menu">
+        <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+        <li><a href="{% url 'customers' %}">Customers</a></li>
+        <li><a href="{% url 'manage_users' %}">Manage Users</a></li>
+    </ul>
+
+    <form action="/logout/" method="POST" style="border-radius: 5px; float: right;">
+        {%  csrf_token %}
+    <button type="submit" class="button alert" id="logout_btn">Logout</button>
+    </form>
 </div>
 <br>
 <br>
 {% block content %}
-    {% endblock %}     
+{% endblock %}                         
 </body>
 </html>

@@ -1,0 +1,7 @@
+{% if request.session.type == 'admin' %}
+{%  include 'home_base.html' %}
+{% elif request.session.type == 'user' %}
+{%  include 'home_base_user.html' %}
+{% endif %}
+{% block content %}
+{% endblock %}
