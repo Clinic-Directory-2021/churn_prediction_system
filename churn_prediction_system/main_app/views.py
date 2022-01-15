@@ -50,7 +50,16 @@ def login_user(request):
     return render(request,'login_user.html')
 
 def dashboard(request):
-    return render(request,'dashboard.html')
+    visuals = firestoreDB.collection(u'visuals')
+    services_list = {
+
+    }
+    docs = visuals.get()
+    for doc in docs:
+        services = visuals.document(doc.id).collection(u'services').document(doc.id).get()
+        services_list[doc.id] = services.to_dict()
+    print(services_list)
+    return render(request,'dashboard.html',{'services':services_list})
 
 def customers(request):
     try:
