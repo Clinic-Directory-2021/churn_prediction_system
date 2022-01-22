@@ -27,10 +27,12 @@ urlpatterns = [
     path('dashboard/',views.dashboard, name = 'dashboard'),
     path('customers/',views.customers, name = 'customers'),
     path('manage_users/',views.manage_users, name = 'manage_users'),
-    path('demographics/',views.demographics, name = 'demographics'),
-    path('services/',views.services, name = 'services'),
-    path('result/',views.result, name = 'result'),
-    path('post_get_demographics/',views.post_get_demographics,),
-    path('post_get_services/',views.post_get_services,),
+    # path('demographics/',views.demographics, name = 'demographics'),
+    # path('services/',views.services, name = 'services'),
+    # path('result/',views.result, name = 'result'),
+    # path('post_get_demographics/',views.post_get_demographics,),
+    # path('post_get_services/',views.post_get_services,),
+    path('import_customers/',views.import_customers,),
+    path('batch_list/',views.batch_list, name="batch_list"),
 ]
 

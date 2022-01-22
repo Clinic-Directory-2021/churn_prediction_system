@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4.3.2/css/metro-all.min.css">
-    <script src="https://cdn.metroui.org.ua/v4.3.2/js/metro.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="{% static 'js/current_id.js' %}" defer></script>
     <link rel="stylesheet" href="{% static 'css/login.css'%}">
@@ -21,7 +20,7 @@
     transform: translate(-50%, -50%);
 }
 </style>
-<script defer>
+<!-- <script defer>
     function toggleInputState(el){
         if($(el).is(':checked'))
             {
@@ -36,10 +35,10 @@
         }
 
     }
-</script>
+</script> -->
 </head>
 <body class="p-5">
-    <div data-role="appbar" data-expand-point="md" style="background-color:#3CB371;" class="head">
+    <div data-role="appbar" data-expand-point="md" style="background-color:#064663;" class="head">
     <!-- <a href="#" class="brand no-hover">
         <span style="width: 55px;" class="p-2 border bd-dark border-radius">
             
@@ -60,12 +59,13 @@
         <li><a href="#">Blog</a></li>
         <li><a href="#">Contacts</a></li>
     </ul> -->
-    <input type="checkbox" data-role="switch" onclick="toggleInputState(this)">
-    Dark Mode 
+    <!-- <input type="checkbox" data-role="switch" onclick="toggleInputState(this)"> -->
+    <h5 style="color: whitesmoke;">CHURN PREDICTION SYSTEM</h5>
 </div>
 <br>
 <br>
 {% block content %}
-    {% endblock %}     
+{% endblock %}     
+    <script src="https://cdn.metroui.org.ua/v4.3.2/js/metro.min.js"></script>
 </body>
 </html>

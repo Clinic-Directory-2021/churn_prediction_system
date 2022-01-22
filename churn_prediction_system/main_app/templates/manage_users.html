@@ -33,7 +33,7 @@
             <td>{{data.status}}</td>
             <td>{{data.email}}</td>
             <td>
-                <button class="button success">Edit</button>
+                <button class="button success" onclick="Metro.dialog.open('#edit_user_dialog'), get_edit_data('{{data.first_name}}','{{data.last_name}}','{{data.email}}','')">Edit</button>
                 <button class="button alert">Delete</button>
             </td>
         </tr>
@@ -41,7 +41,6 @@
         </tbody>
 </table>
 </div>
-
 <div class="dialog" data-role="dialog" id="add_user_dialog" style="border-color: #3CB371;">
     <form action="/post_add_user/" method="POST">
     <div class="dialog-title" style="background-color:#3CB371;"><span class='mif-pencil'></span> CREATE USER DIALOG</div>
@@ -50,15 +49,15 @@
             {% csrf_token %}
             <div class="form-group">
                 <input type="text" data-role="input" name="first_name" placeholder="First Name"
-            data-prepend="<span class='mif-user'></span>">
+            data-prepend="<span class='mif-user'></span>" required>
             </div>
             <div class="form-group">
                 <input type="text" data-role="input" name="last_name" placeholder="Last Name"
-            data-prepend="<span class='mif-user'></span>">
+            data-prepend="<span class='mif-user'></span>" required>
             </div>
             <div class="form-group">
                 <input type="email" data-role="input" name="email" placeholder="Email"
-            data-prepend="<span class='mif-envelop'></span>">
+            data-prepend="<span class='mif-envelop'></span>" required>
             </div>
         
     </div>
@@ -68,4 +67,45 @@
     </div>
 </form>
 </div>
+
+<div class="dialog" data-role="dialog" id="edit_user_dialog" style="border-color: #3CB371;">
+    <!-- <form action="/post_edit_user/" method="POST"> -->
+    <div class="dialog-title" style="background-color:#3CB371;"><span class='mif-pencil'></span> EDIT USER DIALOG</div>
+    <div class="dialog-content">
+        
+            {% csrf_token %}
+            <div class="form-group">
+                <input type="text" data-role="input" name="first_name" id="first_name_edit" placeholder="First Name"
+            data-prepend="<span class='mif-user'></span>" required>
+            </div>
+            <div class="form-group">
+                <input type="text" data-role="input" name="last_name" id="last_name_edit" placeholder="Last Name"
+            data-prepend="<span class='mif-user'></span>" required>
+            </div>
+            <div class="form-group">
+                <input type="email" data-role="input" name="email" id="email_edit" placeholder="Email"
+            data-prepend="<span class='mif-envelop'></span>" required>
+            </div>
+            <div class="form-group">
+                <select data-role="select" name="status" id="status">
+                    <option value="dedicated_pentium_hp"></option>
+                    <optgroup label="Physical servers">
+                        <option value="active">active</option>
+                        <option value="inactive">inactive</option>
+                    </optgroup>
+
+                </select>
+            </div>
+            <input type="hidden" id="selected_id" name="selected_id">
+            <input type="hidden" id="uid" name="uid">
+        
+    </div>
+    <div class="dialog-actions">
+        <button class="button alert js-dialog-close" name="cancel">Cancel</button>
+        <button class="button" style="background-color: #3CB371; color: white;" name="save" type="submit">Save Changes</button>
+    </div>
+<!-- </form> -->
+</div>
+
+>
 {% endblock %}

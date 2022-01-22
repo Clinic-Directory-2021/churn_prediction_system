@@ -1,0 +1,138 @@
+{% if request.session.type == 'admin' %}
+{%  include 'home_base.html' %}
+{% elif request.session.type == 'user' %}
+{%  include 'home_base_user.html' %}
+{% endif %}
+{% block content %}
+
+<div class="p-5">
+    <button class="button dark mif-arrow-left icon" type="submit" onclick="to_batch_list()"> Back to Batch List</button>
+    <button class="button primary mif-add icon" type="submit" onclick="Metro.dialog.open('#demoDialog2')">Add Customer</button> 
+    <br>
+    <br>
+<table class="table striped" data-role="table"
+ data-rows="5" data-rows-steps="5, 10" data-horizontal-scroll="true">
+    <thead>
+        <tr>
+            <th class="sortable-column sort-asc">#</th>
+            <th class="sortable-column sort-asc">CustomerID</th>
+            <th class="sortable-column sort-asc">Tenure</th>
+            <th class="sortable-column sort-asc">Monthly Charges</th>
+            <th class="sortable-column sort-asc">Gender</th>
+            <th class="sortable-column sort-asc">Senior Citizen</th>
+            <th class="sortable-column sort-asc">Parner</th>
+            <th class="sortable-column sort-asc">Dependents</th>
+            <th class="sortable-column sort-asc">Phone_Service</th>
+            <th class="sortable-column sort-asc">Multiple Lines</th>
+            <th class="sortable-column sort-asc">Internet Service</th>
+            <th class="sortable-column sort-asc">Online Security</th>
+            <th class="sortable-column sort-asc">Online Backup</th>
+            <th class="sortable-column sort-asc">Device Protection</th>
+            <th class="sortable-column sort-asc">Tech Support</th>
+            <th class="sortable-column sort-asc">Streaming TV</th>
+            <th class="sortable-column sort-asc">Streaming Movies</th>
+            <th class="sortable-column sort-asc">Contract</th>
+            <th class="sortable-column sort-asc">Paperless Billing</th>
+            <th class="sortable-column sort-asc">Payment Method</th>
+            <th class="sortable-column sort-asc">Churn Label</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+            {%  for data in customer %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{data.customerID}}</td>
+            <td>{{data.Tenure}}</td>
+            <td>{{data.MonthlyCharges}}</td>
+            <td>{{data.TotalCharges}}</td>
+            <td>{{data.Gender}}</td>
+            <td>{{data.Senior_Citizen}}</td>
+            <td>{{data.Partner}}</td>
+            <td>{{data.Dependents}}</td>
+            <td>{{data.Phone_Service}}</td>
+            <td>{{data.Multiple_Lines}}</td>
+            <td>{{data.Internet_Service}}</td>
+            <td>{{data.Online_Security}}</td>
+            <td>{{data.Online_Backup}}</td>
+            <td>{{data.Device_Protection}}</td>
+            <td>{{data.Tech_Support}}</td>
+            <td>{{data.Streaming_TV}}</td>
+            <td>{{data.Streaming_Movies}}</td>
+            <td>{{data.Contract}}</td>
+            <td>{{data.Paperless_Billing}}</td>
+            <td>{{data.Payment_Method}}</td>
+            <td>{{data.Churn_Label}}</td>
+            <td>
+                <button class="button primary">Edit</button>
+                <button class="button alert">Delete</button>
+            </td>
+        </tr>
+            {%  endfor %}
+        </tbody>
+</table>
+</div>
+
+<div class="dialog" id="demoDialog2" data-role="dialog" >
+    <div class="dialog-title">Add Customer</div>
+    <div class="dialog-content" style="overflow-y: auto;">
+        <form action="/add_customers/" method="POST">
+            {% csrf_token %}
+            <input type="text" name="customerID" id="customerID" placeholder="Enter Customer ID">
+            <br>
+            <input type="text" name="MonthlyCharges" id="MonthlyCharges" placeholder="Enter MOnthly Charges">
+            <br>
+            <input type="text" name="TotalCharges" id="TotalCharges" placeholder="Enter Total Charges">
+            <br>
+            <input type="text" name="Gender" id="Gender" placeholder="Enter Gender">
+            <br>
+            <input type="text" name="Senior_Citizen" id="Senior_Citizen" placeholder="Enter Senior Citizen Valye">
+            <br>
+            <input type="text" name="Partner" id="Partner" placeholder="Enter Partner value">
+            <br>
+            <input type="text" name="Dependents" id="Dependents" placeholder="Enter Dependets Value">
+            <br>
+            <input type="text" name="Phone_Service" id="Phone_Service" placeholder="Enter Phone Service value">
+            <br>
+            <input type="text" name="Multiple_LinesD" id="Multiple_Lines" placeholder="Enter Multiple Lines Value">
+            <br>
+            <input type="text" name="Internet_Service" id="Internet_Service" placeholder="Enter Internet Service Value">
+            <br>
+            <input type="text" name="Online_Security" id="Online_Security" placeholder="Ente Online Security value">
+            <br>
+            <input type="text" name="Online_Backup" id="Online_Backup" placeholder="Enter Online Backup value">
+            <br>
+            <input type="text" name="Device_Protection" id="Device_Protection" placeholder="Enter Device Protection Value">
+            <br>
+            <input type="text" name="Tech_Support" id="Tech_Support" placeholder="Enter Tech Support Value">
+            <br>
+            <input type="text" name="Streaming_TV" id="Streaming_TV" placeholder="Enter Streaming TV Value">
+            <br>
+            <input type="text" name="Streaming_Movies" id="Streaming_Movies" placeholder="Enter Streming Movies Value">
+            <br>
+            <input type="text" name="Contract" id="Contract" placeholder="Enter Contract Value">
+            <br>
+            <input type="text" name="Paperless_Billing" id="Paperless_Billing" placeholder="Enter Paperless Billing Value">
+            <br>
+            <input type="text" name="Payment_Method" id="Payment_Method" placeholder="Enter Payment Method Value">
+            <br>
+            <input type="text" name="Churn_Label" id="Churn_Label" placeholder="Enter Churn Label">
+            <br>
+            <input type="text" name="customerID" id="customerID" placeholder="Enter customer ID">
+            <br>
+            <button class="button primary" type="submit">Import</button>
+        </form>
+    </div>
+    <div class="dialog-actions">
+        <button class="button js-dialog-close">Cancel</button>
+    </div>
+</div>
+
+
+
+<script type="">
+    function to_batch_list(){
+        window.location.href = "../customers"
+        }
+</script>
+{% endblock %}

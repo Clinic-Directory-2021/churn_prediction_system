@@ -5,25 +5,49 @@
 {% endif %}
 {% block content %}
 <div class="p-5">
-<table class="table striped table-border cell-border" data-role="table" data-show-pagination="true"  >
+    <button class="button primary" type="submit" onclick="Metro.dialog.open('#demoDialog1')">Import Churn</button>
+    <br>
+    <br>
+<table class="table striped" data-role="table" data-rows="5" data-rows-steps="5, 10">
     <thead>
         <tr>
             <th class="sortable-column sort-asc">#</th>
-            <th class="sortable-column sort-asc">First Name</th>
-            <th class="sortable-column sort-asc">Last Name</th>
-            <th class="sortable-column sort-asc">Username</th>
+            <th class="sortable-column sort-asc">Batch Size</th>
+            <th class="sortable-column sort-asc">Date Created</th>
+            <th>Action</th>
         </tr>
         </thead>
-        <tbody class="row-hover">
+        <tbody>
             {%  for data in visuals %}
         <tr>
             <td>{{forloop.counter}}</td>
-            <td>{{data.customer}}</td>
-            <td>{{data.depender}}</td>
-            <td>{{data.senior_citizen}}</td>
+            <td>{{data.batch_size}}</td>
+            <td>{{data.date_created}}</td>
+            <td><button class="button primary" onclick="to_batch_list('{{data.visual_id}}')">Open batch</button></td>
         </tr>
             {%  endfor %}
         </tbody>
 </table>
 </div>
+
+<div class="dialog" data-role="dialog" id="demoDialog1">
+    <div class="dialog-title">Import Churn</div>
+    <div class="dialog-content">
+        <form action="/import_customers/" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="excel" required id="excel" accept=".csv">
+            <br>
+            <button class="button primary" type="submit">Import</button>
+        </form>
+    </div>
+    <div class="dialog-actions">
+        <button class="button js-dialog-close">Cancel</button>
+    </div>
+</div>
+
+<script type="">
+    function to_batch_list(visual_id){
+        window.location.href = "../batch_list/?current_id=" + visual_id
+    }
+</script>
 {% endblock %}

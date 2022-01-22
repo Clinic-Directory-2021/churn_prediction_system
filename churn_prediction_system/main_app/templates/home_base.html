@@ -7,12 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="https://cdn.metroui.org.ua/v4.3.2/css/metro-all.min.css">
-
-    <script src="https://cdn.metroui.org.ua/v4.3.2/js/metro.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
     <script src="{% static 'js/current_id.js' %}" defer></script>
+    <script src="{% static 'js/edit_user.js' %}" defer></script>
 
     <link rel="stylesheet" href="{% static 'css/login.css'%}">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -55,8 +54,7 @@
         </span>
     </a> -->
     <input type="checkbox" data-role="switch" onclick="toggleInputState(this)">
-    Dark Mode 
-
+    <h5>CHURN PREDICTION SYSTEM</h5>
      <ul class="app-bar-menu">
         <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
         <li><a href="{% url 'customers' %}">Customers</a></li>
@@ -71,6 +69,7 @@
 <br>
 <br>
 {% block content %}
-{% endblock %}                         
+{% endblock %}     
+<script src="https://cdn.metroui.org.ua/v4.3.2/js/metro.min.js"></script>                    
 </body>
 </html>
