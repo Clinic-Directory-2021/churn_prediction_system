@@ -45,20 +45,19 @@
 <body>
     
 
-    <div data-role="appbar" data-expand-point="md" style="background-color:#3CB371;" class="head">
+    <div data-role="appbar" data-expand-point="md"  style="background-color:#064663; color: white;" class="head">
      <!-- <a href="#" class="brand no-hover">
         <span style="width: 55px;" class="p-2 border bd-dark border-radius">
             
         </span>
     </a> -->
-    <input type="checkbox" data-role="switch" onclick="toggleInputState(this)">
     <h5>CHURN PREDICTION SYSTEM</h5>
      <ul class="app-bar-menu">
         <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
         <li><a href="{% url 'customers' %}">Customers</a></li>
     </ul>
 
-    <form action="/logout/" method="POST" style="border-radius: 5px; float: right;">
+    <form action="/logout/" method="POST" style="border-radius: 5px; float: right;" style="float: right;">
         {%  csrf_token %}
     <button type="submit" class="button alert" id="logout_btn">Logout</button>
     </form>

@@ -12,6 +12,7 @@
 
     <script src="{% static 'js/current_id.js' %}" defer></script>
     <script src="{% static 'js/edit_user.js' %}" defer></script>
+    <script src="{% static 'js/delete_user.js' %}" defer></script>
 
     <link rel="stylesheet" href="{% static 'css/login.css'%}">
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -47,13 +48,12 @@
 <body>
     
 
-    <div data-role="appbar" data-expand-point="md" style="background-color:#3CB371;" class="head">
+    <div data-role="appbar" data-expand-point="md"  style="background-color:#064663; color: white;" class="head">
      <!-- <a href="#" class="brand no-hover">
         <span style="width: 55px;" class="p-2 border bd-dark border-radius">
             
         </span>
     </a> -->
-    <input type="checkbox" data-role="switch" onclick="toggleInputState(this)">
     <h5>CHURN PREDICTION SYSTEM</h5>
      <ul class="app-bar-menu">
         <li><a href="{% url 'dashboard' %}">Dashboard</a></li>

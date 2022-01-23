@@ -10,6 +10,7 @@ import requests
 import json
 
 import pyrebase
+from main_app import rule_sets as rs
 
 import firebase_admin
 from firebase_admin import credentials
@@ -21,6 +22,7 @@ from django import forms
 from django.template import RequestContext
 import django_excel as excel
 import pandas as pd
+from firebase_admin import auth
 
 config = {
   "apiKey": "AIzaSyAPkeZMLpbjKhHCBJPYhlapULa95M6xktQ",
@@ -223,7 +225,7 @@ def post_add_user(request):
                 u'last_name': last_name,
                 u'email': email,
                 u'status': 'active',
-                u'uid':str(user['idToken']),
+                u'uid':str(user['localId']),
                 u'user_id':str(user_id)
             }
             firestoreDB.collection(u'users').document(str(user_id)).set(data)
@@ -264,6 +266,12 @@ def post_login_user(request):
     try:
         # if there is no error then signin the user with given email and password
         user=authe.sign_in_with_email_and_password(email,pasw)
+        uid = user['localId']
+        docs = firestoreDB.collection(u'users').where(u'uid', u'==', str(uid)).get()
+        for doc in docs:
+            status = u'{}'.format(doc.to_dict()['status'])
+            if status == "inactive":
+                return render(request,"login_user.html",{{"validation_inactive":"Your account is inactive. Please contact the administrator."}})    
     except:
         message="Invalid Credentials !! Please ChecK your Data"
         return render(request,"login_user.html",{"validation":message})
@@ -293,6 +301,15 @@ def import_customers(request):
             visual.set(visual_info)
             customer = visual.collection(u"customer")
             for index, row in csv.iterrows():
+                
+                rs.rule_set(row["CustomerID"],row["Tenure"],row["MonthlyCharges"],
+                row["TotalCharges"],row["Gender"],row["Senior_Citizen"],
+                row["Partner"],row["Dependents"],row["Phone_Service"],row["Multiple_Lines"],
+                row["Internet_Service"],row["Online_Security"],row["Online_Backup"],
+                row["Device_Protection"],row["Tech_Support"],row["Streaming_TV"],
+                row["Streaming_Movies"],row["Contract"],row["Paperless_Billing"],
+                row["Payment_Method"],)
+                
                 customer_data = {
                     "customerID":str(row["CustomerID"]),
                     "Tenure":str(row["Tenure"]),
@@ -314,7 +331,7 @@ def import_customers(request):
                     "Contract":str(row["Contract"]),
                     "Paperless_Billing":str(row["Paperless_Billing"]),
                     "Payment_Method":str(row["Payment_Method"]),
-                    "Churn_Label":str(row["Churn_Label"]),
+                    "Churn_Label": rs.get_churn(),
                 }
                 customer_document = customer.document(str(index))
                 customer_document.set(customer_data)
@@ -334,4 +351,32 @@ def batch_list(request):
     return render(request,'batch_list.html',{'customer':[data.to_dict() for data in customer]})
 
 #  def add_customer(request):
+def delete_user(request):
+    uid = request.GET.get('uid')
+    user_id = request.GET.get('user_id')
+    auth.delete_user(uid)
+    firestoreDB.collection(u'users').document(user_id).delete()
+    try:
+        users = firestoreDB.collection(u'users').get()
+        return render(request,'manage_users.html',{'users':[data.to_dict() for data in users]})
+    except:
+        return render(request,'manage_users.html')
+
+def edit_user(request):
+    user_id = request.POST.get('selected_id')
+    first_name = request.POST.get('first_name')
+    last_name = request.POST.get('last_name')
+    status = request.POST.get('status')
+    updated_data = {
+        "first_name": first_name,
+        "last_name":last_name,
+        'status':status
+    }
+    users = firestoreDB.collection(u'users').document(user_id)
+    users.update(updated_data)
+    try:
+        users = firestoreDB.collection(u'users').get()
+        return render(request,'manage_users.html',{'users':[data.to_dict() for data in users],"validation_success":"Successfully Edit User " + first_name + " " + last_name})
+    except:
+        return render(request,'manage_users.html')
      

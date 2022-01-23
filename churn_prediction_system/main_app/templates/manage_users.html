@@ -1,15 +1,18 @@
 {%  include 'home_base.html' %}
 {% if validation %}
 <script>
-    swal("Error.","{{validation}}", "error");
+    swal("Error.","Email Exist or your password is less than 6 character", "error");
 </script>
 {% elif validation_success %}
 <script>
-    swal("Error.","{{validation_success}}", "success");
+    swal("Success.","{{validation_success}}", "success");
 </script>
 {% endif %}
 {% block content %}
 <div class="p-5">
+    <h1>Manage Users</h1>
+    <br>
+    <br>
 <button class="button primary mif-add icon" onclick="Metro.dialog.open('#add_user_dialog')"> Add User</button>
 <br>
 <br>
@@ -30,20 +33,20 @@
             <td>{{forloop.counter}}</td>
             <td>{{data.first_name}}</td>
             <td>{{data.last_name}}</td>
-            <td>{{data.status}}</td>
             <td>{{data.email}}</td>
+            <td>{{data.status}}</td>
             <td>
-                <button class="button success" onclick="Metro.dialog.open('#edit_user_dialog'), get_edit_data('{{data.first_name}}','{{data.last_name}}','{{data.email}}','')">Edit</button>
-                <button class="button alert">Delete</button>
+                <button class="button success" onclick="Metro.dialog.open('#edit_user_dialog'), get_edit_data('{{data.first_name}}','{{data.last_name}}','{{data.email}}'), get_status('{{data.status}}','{{data.user_id}}')">Edit</button>
+                <button class="button alert" onclick="Metro.dialog.open('#delete_user_dialog'), delete_user_data('{{data.uid}}')">Delete</button>
             </td>
         </tr>
             {%  endfor %}
         </tbody>
 </table>
 </div>
-<div class="dialog" data-role="dialog" id="add_user_dialog" style="border-color: #3CB371;">
+<div class="dialog" data-role="dialog" id="add_user_dialog" style="border-color: #064663;">
     <form action="/post_add_user/" method="POST">
-    <div class="dialog-title" style="background-color:#3CB371;"><span class='mif-pencil'></span> CREATE USER DIALOG</div>
+    <div class="dialog-title" style="background-color:#064663; color: white;"><span class='mif-pencil'></span> CREATE USER DIALOG</div>
     <div class="dialog-content">
         
             {% csrf_token %}
@@ -63,16 +66,18 @@
     </div>
     <div class="dialog-actions">
         <button class="button alert js-dialog-close" name="cancel">Cancel</button>
-        <button class="button" style="background-color: #3CB371; color: white;" name="create" type="submit">Create User</button>
+        <button class="button" style="background-color:#064663; color: white;" name="create" type="submit">Create User</button>
     </div>
 </form>
 </div>
-
-<div class="dialog" data-role="dialog" id="edit_user_dialog" style="border-color: #3CB371;">
-    <!-- <form action="/post_edit_user/" method="POST"> -->
-    <div class="dialog-title" style="background-color:#3CB371;"><span class='mif-pencil'></span> EDIT USER DIALOG</div>
+<div class="dialog" data-role="dialog" id="edit_user_dialog" style="border-color: #064663;">
+    
+    <div class="dialog-title" style="background-color:#064663; color: white;">
+        <span class='mif-pencil'></span> EDIT USER DIALOG 
+        <button class="button ani-hover-horizontal js-dialog-close mif-cross icon" name="cancel" style="float: right;"></button>
+    </div>
     <div class="dialog-content">
-        
+        <form action="/edit_user/" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <input type="text" data-role="input" name="first_name" id="first_name_edit" placeholder="First Name"
@@ -84,28 +89,45 @@
             </div>
             <div class="form-group">
                 <input type="email" data-role="input" name="email" id="email_edit" placeholder="Email"
-            data-prepend="<span class='mif-envelop'></span>" required>
+            data-prepend="<span class='mif-envelop'></span>" required readonly>
             </div>
             <div class="form-group">
-                <select data-role="select" name="status" id="status">
-                    <option value="dedicated_pentium_hp"></option>
-                    <optgroup label="Physical servers">
+                <input type="text" data-role="input" name="status" id="status_edit" placeholder="Status"
+            data-prepend="<span class='mif-question'></span>" required>
+            </div>
+            <!-- <div class="form-group">
+                <select data-role="select" name="status_edit" id="status_edit">
+                    <optgroup label="Other Choices">
                         <option value="active">active</option>
                         <option value="inactive">inactive</option>
                     </optgroup>
-
                 </select>
-            </div>
+            </div> -->
             <input type="hidden" id="selected_id" name="selected_id">
             <input type="hidden" id="uid" name="uid">
         
     </div>
     <div class="dialog-actions">
-        <button class="button alert js-dialog-close" name="cancel">Cancel</button>
-        <button class="button" style="background-color: #3CB371; color: white;" name="save" type="submit">Save Changes</button>
+        <button class="button ani-hover-horizontal" style="background-color: #064663; color: white;" name="save" type="submit">Save Changes</button>
+    </div>
+</form>
+</div>
+
+<div class="dialog bd-red" data-role="dialog" id="delete_user_dialog" style="border-color: #064663;">
+    <!-- <form action="/post_edit_user/" method="POST"> -->
+    <div class="dialog-title bg-red fg-white" style="background-color:#064663; color: white;"><span class='mif-warning'></span> EDIT USER DIALOG</div>
+    <div class="dialog-content">
+        
+        Are you sure you want to delete this user?
+        
+    </div>
+    <div class="dialog-actions">
+        <button class="button js-dialog-close ani-hover-horizontal" name="cancel">Cancel</button>
+        <button class="button alert ani-hover-horizontal" name="save" type="submit" onclick="delete_user()">Delete</button>
     </div>
 <!-- </form> -->
 </div>
+
 
 >
 {% endblock %}

@@ -33,6 +33,8 @@ urlpatterns = [
     # path('post_get_demographics/',views.post_get_demographics,),
     # path('post_get_services/',views.post_get_services,),
     path('import_customers/',views.import_customers,),
+    path('delete_user/',views.delete_user,),
+    path('edit_user/',views.edit_user,),
     path('batch_list/',views.batch_list, name="batch_list"),
 ]
 
