@@ -50,7 +50,7 @@ def post_login(request):
     username = request.POST.get('username')
     password = request.POST.get('password')
     if username == 'admin' and password == 'admin':
-        return render(request,'dashboard.html')
+        return render(request,'customers.html')
     else:
         return render(request,'login.html',{'validation':'Username or Password is incorrect'})
 def logout(request):

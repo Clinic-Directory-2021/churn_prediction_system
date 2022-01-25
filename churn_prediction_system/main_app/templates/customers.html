@@ -8,7 +8,7 @@
     <h1>Customers</h1>
     <br>
     <br>
-    <button class="button primary" type="submit" onclick="Metro.dialog.open('#demoDialog1')">Import Churn</button>
+    <button class="button success mif-file-excel icon" type="submit" onclick="Metro.dialog.open('#demoDialog1')"> Import Data</button>
     <br>
     <br>
 <table class="table striped" data-role="table" data-rows="5" data-rows-steps="5, 10">
@@ -40,7 +40,7 @@
             {% csrf_token %}
             <input type="file" name="excel" required id="excel" accept=".csv">
             <br>
-            <button class="button primary" type="submit">Import</button>
+            <button class="button success" type="submit">Import</button>
         </form>
     </div>
     <div class="dialog-actions">
