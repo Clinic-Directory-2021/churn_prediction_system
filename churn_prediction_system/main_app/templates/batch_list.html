@@ -10,7 +10,10 @@
     <br>
     <br>
     <button class="button dark mif-arrow-left icon" type="submit" onclick="to_batch_list()"> Back to Batch List</button>
+    {% if request.session.type == 'admin' %}
+    {% elif request.session.type == 'user' %}
     <button class="button primary mif-add icon" type="submit" onclick="Metro.dialog.open('#demoDialog2')">Add Customer</button>
+    {% endif %}
     <br>
     <br>
 <table class="table striped" data-role="table"

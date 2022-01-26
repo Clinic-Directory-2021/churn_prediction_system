@@ -37,7 +37,7 @@
             <td>{{data.status}}</td>
             <td>
                 <button class="button success" onclick="Metro.dialog.open('#edit_user_dialog'), get_edit_data('{{data.first_name}}','{{data.last_name}}','{{data.email}}'), get_status('{{data.status}}','{{data.user_id}}')">Edit</button>
-                <button class="button alert" onclick="Metro.dialog.open('#delete_user_dialog'), delete_user_data('{{data.uid}}')">Delete</button>
+                <button class="button alert" onclick="Metro.dialog.open('#delete_user_dialog'), delete_user_data('{{data.uid}}','{{data.user_id}}')">Delete</button>
             </td>
         </tr>
             {%  endfor %}

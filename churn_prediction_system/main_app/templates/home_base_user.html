@@ -57,15 +57,27 @@
         <li><a href="{% url 'customers' %}">Customers</a></li>
     </ul>
 
-    <form action="/logout/" method="POST" style="border-radius: 5px; float: right;" style="float: right;">
-        {%  csrf_token %}
-    <button type="submit" class="button alert" id="logout_btn">Logout</button>
-    </form>
+    
+    <button type="submit" class="button alert" id="logout_btn" onclick="Metro.dialog.open('#demoDialog1')">Logout</button>
+    
 </div>
 <br>
 <br>
 {% block content %}
-{% endblock %}         
+{% endblock %}  
+<div class="dialog bd-red" data-role="dialog" id="demoDialog1">
+    <div class="dialog-title bg-red fg-white">Confirmation Dialog</div>
+    <div class="dialog-content">
+       Confirm logout?
+    </div>
+    <div class="dialog-actions">
+        <button class="button js-dialog-close">No</button>
+        <form action="/logout/" method="POST" style="border-radius: 5px; float: right;" style="float: right;">
+            {%  csrf_token %}
+        <button class="button alert js-dialog-close" type="submit">Yes</button>
+    </form>
+    </div>
+</div>     
 <script src="https://cdn.metroui.org.ua/v4.3.2/js/metro.min.js"></script>                
 </body>
 </html>
