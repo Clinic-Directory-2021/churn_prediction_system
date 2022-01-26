@@ -120,7 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = 'C:/Users/CANLA/Documents/capstone_system/static'
+STATIC_ROOT = 'C:/Users/CANLA/Documents/capstone_system/churn_prediction_system/main_app/static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
