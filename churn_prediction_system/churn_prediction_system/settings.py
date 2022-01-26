@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-t$c6-uilkkm*%6#c=jhz#__e#w=@&&eswj+seumr-u@t%&sbw+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'churn-prediction-system.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', 'churn-prediction-system2.herokuapp.com']
 
 
 # Application definition
