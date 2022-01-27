@@ -4,7 +4,6 @@
 {%  include 'home_base_user.html' %}
 {% endif %}
 {% block content %}
-
 <div class="p-5">
     <h1>Batch List</h1>
     <br>
@@ -12,8 +11,10 @@
     <button class="button dark mif-arrow-left icon" type="submit" onclick="to_batch_list()"> Back to Batch List</button>
     {% if request.session.type == 'admin' %}
     {% elif request.session.type == 'user' %}
-    <button class="button primary mif-add icon" type="submit" onclick="Metro.dialog.open('#demoDialog2')">Add Customer</button>
+    <button class="button primary mif-add icon" type="submit" onclick="Metro.dialog.open('#demoDialog2')"> Add Customer</button>
     {% endif %}
+    <button class="button alert mif-file-pdf icon" type="submit" onclick="export_pdf('{{current_id}}')"> Export PDF</button>
+    <button class="button success" onclick="Metro.dialog.open('#show_legends')")>Show Legends</button>
     <br>
     <br>
 <table class="table striped" data-role="table"
@@ -135,6 +136,134 @@
             <br>
             <button class="button primary" type="submit">Import</button>
         </form>
+    </div>
+    <div class="dialog-actions">
+        <button class="button js-dialog-close">Cancel</button>
+    </div>
+</div>
+
+<div class="dialog w-50" id="show_legends" data-role="dialog">
+    <div class="dialog-title">Legends</div>
+    <div class="dialog-content" style="overflow-y: auto;">
+        
+        <table class="table" style="text-align:center;">
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>1</th>
+                    <th>2</th>
+                    <th>3</th>
+                    <th>4</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Senior Citizen</td>
+                    <td>No</td>
+                    <td>Yes</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Partner</td>
+                    <td>No</td>
+                    <td>Yes</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Dependents</td>
+                    <td>No</td>
+                    <td>Yes</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Multiple Lines</td>
+                    <td>No</td>
+                    <td>No Phone</td>
+                    <td>Yes</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Internet Service</td>
+                    <td>DSL</td>
+                    <td>Fiber Optic</td>
+                    <td>No</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Online Security</td>
+                    <td>No</td>
+                    <td>No Internet Service</td>
+                    <td>Yes</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Online Backup</td>
+                    <td>No</td>
+                    <td>No Internet Service</td>
+                    <td>Yes</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Device Protection</td>
+                    <td>No</td>
+                    <td>No Internet Service</td>
+                    <td>Yes</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Tech Support</td>
+                    <td>No</td>
+                    <td>No Internet Service</td>
+                    <td>Yes</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Streaming TV</td>
+                    <td>No</td>
+                    <td>No Internet Service</td>
+                    <td>Yes</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Streaming Movies</td>
+                    <td>No</td>
+                    <td>No Internet Service</td>
+                    <td>Yes</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Contract</td>
+                    <td>Month-toMonth</td>
+                    <td>One Year</td>
+                    <td>Two Years</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Paperless Billing</td>
+                    <td>No</td>
+                    <td>Yes</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Payment Method</td>
+                    <td>Bank Transfer</td>
+                    <td>Credit Card</td>
+                    <td>Electronic Check</td>
+                    <td>Mailed Check</td>
+                </tr>
+                <tr>
+                    <td>Churn Label</td>
+                    <td>No</td>
+                    <td>Yes</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     <div class="dialog-actions">
         <button class="button js-dialog-close">Cancel</button>

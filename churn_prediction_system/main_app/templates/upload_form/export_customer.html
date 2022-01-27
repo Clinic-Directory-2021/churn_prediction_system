@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1 align="center">BATCH CUSTOMER LIST</h1>
+    <hr>
+    {%  for data in customers %}
+            <p>CustomerID : {{data.customerID}}</p>
+            <p>Tenure : {{data.Tenure}}</p>
+            <p>Monthly Charges : {{data.MonthlyCharges}}</p>
+            <p>Total Charges : {{data.TotalCharges}}</p>
+            <p>Senior Citizen : {{data.Senior_Citizen}}</p>
+            <p>Parner : {{data.Partner}}</p>
+            <p>Dependents : {{data.Dependents}}</p>
+            <p>Multiple Lines : {{data.Multiple_Lines}}</p>
+            <p>Internet Service : {{data.Internet_Service}}</p>
+            <p>Online Security : {{data.Online_Security}}</p>
+            <p>Online Backup : {{data.Online_Backup}}</p>
+            <p>Device Protection : {{data.Device_Protection}}</p>
+            <p>Tech Support : {{data.Tech_Support}}</p>
+            <p>Streaming TV : {{data.Streaming_TV}}</p>
+            <p>Streaming Movies : {{data.Streaming_Movies}}</p>
+            <p>Contract : {{data.Contract}}</p>
+            <p>Paperless Billing : {{data.Paperless_Billing}}</p>
+            <p>Payment Method : {{data.Payment_Method}}</p>
+            <p>Churn Label : {{data.Churn_Label}}</p>
+            <hr>
+    {%  endfor %}
+       
+</body>
+</html>
