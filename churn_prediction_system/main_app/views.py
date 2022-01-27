@@ -1,5 +1,5 @@
 from csv import excel
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 
 from datetime import datetime
@@ -17,7 +17,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 
 # from django.shortcuts import render_to_response
-from django.http import HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest
 from django import forms
 from django.template import RequestContext
 import django_excel as excel
@@ -283,72 +283,73 @@ class UploadFileForm(forms.Form):
     file = forms.FileField()
 
 def import_customers(request):
-    date_created = datetime.now()
-    visual_id =  calendar.timegm(date_created.timetuple())
-    if request.method == "POST":
-            file = request.FILES['excel']
-            csv = pd.read_csv(file)
-            csv_size = 0
-            arr = csv
-            for index, row in csv.iterrows():
-                csv_size += 1
-            visual = firestoreDB.collection(u'visuals').document(str(visual_id))
-            visual_info = {
-                    "batch_size":str(csv_size),
-                    "visual_id":str(visual_id),
-                    "date_created":str(date_created),
-                }
-            visual.set(visual_info)
-            customer = visual.collection(u"customer")
-            for index, row in csv.iterrows():
-                
-                rs.rule_set(row["CustomerID"],row["Tenure"],row["MonthlyCharges"],
-                row["TotalCharges"],row["Gender"],row["Senior_Citizen"],
-                row["Partner"],row["Dependents"],row["Phone_Service"],row["Multiple_Lines"],
-                row["Internet_Service"],row["Online_Security"],row["Online_Backup"],
-                row["Device_Protection"],row["Tech_Support"],row["Streaming_TV"],
-                row["Streaming_Movies"],row["Contract"],row["Paperless_Billing"],
-                row["Payment_Method"],)
-                
-                customer_data = {
-                    "customerID":str(row["CustomerID"]),
-                    "Tenure":str(row["Tenure"]),
-                    "MonthlyCharges":str(row["MonthlyCharges"]),
-                    "TotalCharges":str(row["TotalCharges"]),
-                    "Gender":str(row["Gender"]),
-                    "Senior_Citizen":str(row["Senior_Citizen"]),
-                    "Partner":str(row["Partner"]),
-                    "Dependents":str(row["Dependents"]),
-                    "Phone_Service":str(row["Phone_Service"]),
-                    "Multiple_Lines":str(row["Multiple_Lines"]),
-                    "Internet_Service":str(row["Internet_Service"]),
-                    "Online_Security":str(row["Online_Security"]),
-                    "Online_Backup":str(row["Online_Backup"]),
-                    "Device_Protection":str(row["Device_Protection"]),
-                    "Tech_Support":str(row["Tech_Support"]),
-                    "Streaming_TV":str(row["Streaming_TV"]),
-                    "Streaming_Movies":str(row["Streaming_Movies"]),
-                    "Contract":str(row["Contract"]),
-                    "Paperless_Billing":str(row["Paperless_Billing"]),
-                    "Payment_Method":str(row["Payment_Method"]),
-                    "Churn_Label": rs.get_churn(),
-                }
-                customer_document = customer.document(str(index))
-                customer_document.set(customer_data)
+        date_created = datetime.now()
+        visual_id =  calendar.timegm(date_created.timetuple())
+    # try:
+        if request.method == "POST":
+                file = request.FILES['excel']
+                csv = pd.read_csv(file)
+                csv_size = 0
+                arr = csv
+                for index, row in csv.iterrows():
+                    csv_size += 1
+                visual = firestoreDB.collection(u'visuals').document(str(visual_id))
+                visual_info = {
+                        "batch_size":str(csv_size),
+                        "visual_id":str(visual_id),
+                        "date_created":str(date_created),
+                    }
+                visual.set(visual_info)
+                customer = visual.collection(u"customer")
+                for index, row in csv.iterrows():
+                    
+                    rs.rule_set(row["CustomerID"],row["Tenure"],row["MonthlyCharges"],row["TotalCharges"],row["Senior_Citizen"],
+                    row["Partner"],row["Dependents"],row["Multiple_Lines"],row["Internet_Service"],row["Online_Security"],
+                    row["Online_Backup"],row["Device_Protection"],row["Tech_Support"],row["Streaming_TV"],row["Streaming_Movies"],
+                    row["Contract"],row["Paperless_Billing"],row["Payment_Method"])
+                    
+                    customer_data = {
+                        "ID":str(index),
+                        "customerID":str(row["CustomerID"]),
+                        "Tenure":str(row["Tenure"]),
+                        "MonthlyCharges":str(row["MonthlyCharges"]),
+                        "TotalCharges":str(row["TotalCharges"]),
+                        "Senior_Citizen":str(row["Senior_Citizen"]),
+                        "Partner":str(row["Partner"]),
+                        "Dependents":str(row["Dependents"]),
+                        "Multiple_Lines":str(row["Multiple_Lines"]),
+                        "Internet_Service":str(row["Internet_Service"]),
+                        "Online_Security":str(row["Online_Security"]),
+                        "Online_Backup":str(row["Online_Backup"]),
+                        "Device_Protection":str(row["Device_Protection"]),
+                        "Tech_Support":str(row["Tech_Support"]),
+                        "Streaming_TV":str(row["Streaming_TV"]),
+                        "Streaming_Movies":str(row["Streaming_Movies"]),
+                        "Contract":str(row["Contract"]),
+                        "Paperless_Billing":str(row["Paperless_Billing"]),
+                        "Payment_Method":str(row["Payment_Method"]),
+                        "Churn_Label": rs.get_churn(),
+                    }
+                    customer_document = customer.document(str(index))
+                    customer_document.set(customer_data)
 
-            visuals = firestoreDB.collection(u'visuals').get()
-            return render(request,'customers.html',{'visuals':[data.to_dict() for data in visuals]})
-    else:
-        form = UploadFileForm()
-    return render(
-            request,
-            'result.html')
+                visuals = firestoreDB.collection(u'visuals').get()
+                return render(request,'customers.html',{'visuals':[data.to_dict() for data in visuals]})
+    # except Exception as e:
+    #     print(str(e))
+    #     visuals = firestoreDB.collection(u'visuals').get()
+    #     return render(request,'customers.html',{'visuals':[data.to_dict() for data in visuals]})
+        else:
+            form = UploadFileForm()
+        return render(
+                request,
+                'result.html')
         # context_instance=RequestContext(request)
 
 def batch_list(request):
     current_id = request.GET.get('current_id')
     customer = firestoreDB.collection(u'visuals').document(current_id).collection(u'customer').get()
-    return render(request,'batch_list.html',{'customer':[data.to_dict() for data in customer]})
+    return render(request,'batch_list.html',{'customer':[data.to_dict() for data in customer],"current_id":current_id})
 
 #  def add_customer(request):
 def delete_user(request):
@@ -379,4 +380,21 @@ def edit_user(request):
         return render(request,'manage_users.html',{'users':[data.to_dict() for data in users],"validation_success":"Successfully Edit User " + first_name + " " + last_name})
     except:
         return render(request,'manage_users.html')
+
+def delete_batch(request):
+    visual_id = request.GET.get('visual_id')
+    visuals = firestoreDB.collection(u'visuals').get()
+    for doc1 in visuals:
+        customer = firestoreDB.collection(u'visuals').document(visual_id).collection('customer').get()
+        for doc2 in customer:
+            firestoreDB.collection(u'visuals').document(visual_id).collection('customer').document(doc2.id).delete()
+        firestoreDB.collection(u'visuals').document(visual_id).delete()
+    visuals = firestoreDB.collection(u'visuals').get()
+    return render(request,'customers.html',{'visuals':[data.to_dict() for data in visuals]})
+
+def delete_customer(request):
+    current_id = request.GET.get('current_id')
+    ID = request.GET.get('ID')
+    firestoreDB.collection(u'visuals').document(current_id).collection('customer').document(ID).delete()
+    return redirect('/batch_list/?current_id='+current_id)
      

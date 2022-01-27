@@ -1,7 +1,6 @@
 import this
 from typing import Any
-
-def rule_set(customer_id, Tenure, MonthlyCharges, TotalCharges, Gender, Senior_Citizen, Partner, Dependents, Phone_Service, Multiple_Lines, 
+def rule_set(customer_id, Tenure, MonthlyCharges, TotalCharges, Senior_Citizen, Partner, Dependents, Multiple_Lines, 
     Internet_Service, Online_Security, Online_Backup, Device_Protection, Tech_Support, Streaming_TV, Streaming_Movies, Contract, Paperless_Billing, Payment_Method):
     global churn_label  
     if Contract == 3 and MonthlyCharges <=  '92.4' and Senior_Citizen == 1:
