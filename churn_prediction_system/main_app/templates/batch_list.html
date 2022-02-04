@@ -11,13 +11,13 @@
     <button class="button dark mif-arrow-left icon" type="submit" onclick="to_batch_list()"> Back to Batch List</button>
     {% if request.session.type == 'admin' %}
     {% elif request.session.type == 'user' %}
-    <button class="button primary mif-add icon" type="submit" onclick="Metro.dialog.open('#demoDialog2')"> Add Customer</button>
+    <!-- <button class="button primary mif-add icon" type="submit" onclick="Metro.dialog.open('#demoDialog2')"> Add Customer</button> -->
     {% endif %}
     <button class="button alert mif-file-pdf icon" type="submit" onclick="export_pdf('{{current_id}}')"> Export PDF</button>
     <button class="button success" onclick="Metro.dialog.open('#show_legends')")>Show Legends</button>
     <br>
     <br>
-<table class="table striped" data-role="table"
+<table class="table striped bg-white cell-border" data-role="table"
  data-rows="5"  data-horizontal-scroll="true" id="table1">
     <thead>
         <tr>
@@ -92,49 +92,45 @@
     <div class="dialog-content" style="overflow-y: auto;">
         <form action="/add_customers/" method="POST">
             {% csrf_token %}
-            <input type="text" name="customerID" id="customerID" placeholder="Enter Customer ID">
+            <input type="text" name="customerID" id="customerID" placeholder="Enter Customer ID" required>
             <br>
-            <input type="text" name="MonthlyCharges" id="MonthlyCharges" placeholder="Enter MOnthly Charges">
+            <input type="text" name="Tenure" id="Tenure" placeholder="Enter Tenure" required>
             <br>
-            <input type="text" name="TotalCharges" id="TotalCharges" placeholder="Enter Total Charges">
+            <input type="text" name="MonthlyCharges" id="MonthlyCharges" placeholder="Enter Monthly Charges" required>
             <br>
-            <input type="text" name="Gender" id="Gender" placeholder="Enter Gender">
+            <input type="text" name="TotalCharges" id="TotalCharges" placeholder="Enter Total Charges" required>
             <br>
-            <input type="text" name="Senior_Citizen" id="Senior_Citizen" placeholder="Enter Senior Citizen Valye">
+            <input type="text" name="Senior_Citizen" id="Senior_Citizen" placeholder="Enter Senior Citizen Value" required>
             <br>
-            <input type="text" name="Partner" id="Partner" placeholder="Enter Partner value">
+            <input type="text" name="Partner" id="Partner" placeholder="Enter Partner value" required>
             <br>
-            <input type="text" name="Dependents" id="Dependents" placeholder="Enter Dependets Value">
+            <input type="text" name="Dependents" id="Dependents" placeholder="Enter Dependents Value" required>
             <br>
-            <input type="text" name="Phone_Service" id="Phone_Service" placeholder="Enter Phone Service value">
+            <input type="text" name="Phone_Service" id="Phone_Service" placeholder="Enter Phone Service Value" required>
             <br>
-            <input type="text" name="Multiple_LinesD" id="Multiple_Lines" placeholder="Enter Multiple Lines Value">
+            <input type="text" name="Multiple_Lines" id="Multiple_Lines" placeholder="Enter Multiple Lines Value" required>
             <br>
-            <input type="text" name="Internet_Service" id="Internet_Service" placeholder="Enter Internet Service Value">
+            <input type="text" name="Internet_Service" id="Internet_Service" placeholder="Enter Internet Service Value" required>
             <br>
-            <input type="text" name="Online_Security" id="Online_Security" placeholder="Ente Online Security value">
+            <input type="text" name="Online_Security" id="Online_Security" placeholder="Ente Online Security value" required>
             <br>
-            <input type="text" name="Online_Backup" id="Online_Backup" placeholder="Enter Online Backup value">
+            <input type="text" name="Online_Backup" id="Online_Backup" placeholder="Enter Online Backup value" required>
             <br>
-            <input type="text" name="Device_Protection" id="Device_Protection" placeholder="Enter Device Protection Value">
+            <input type="text" name="Device_Protection" id="Device_Protection" placeholder="Enter Device Protection Value" required>
             <br>
-            <input type="text" name="Tech_Support" id="Tech_Support" placeholder="Enter Tech Support Value">
+            <input type="text" name="Tech_Support" id="Tech_Support" placeholder="Enter Tech Support Value" required>
             <br>
-            <input type="text" name="Streaming_TV" id="Streaming_TV" placeholder="Enter Streaming TV Value">
+            <input type="text" name="Streaming_TV" id="Streaming_TV" placeholder="Enter Streaming TV Value" required>
             <br>
-            <input type="text" name="Streaming_Movies" id="Streaming_Movies" placeholder="Enter Streming Movies Value">
+            <input type="text" name="Streaming_Movies" id="Streaming_Movies" placeholder="Enter Streming Movies Value" required>
             <br>
-            <input type="text" name="Contract" id="Contract" placeholder="Enter Contract Value">
+            <input type="text" name="Contract" id="Contract" placeholder="Enter Contract Value" required>
             <br>
-            <input type="text" name="Paperless_Billing" id="Paperless_Billing" placeholder="Enter Paperless Billing Value">
+            <input type="text" name="Paperless_Billing" id="Paperless_Billing" placeholder="Enter Paperless Billing Value" required>
             <br>
-            <input type="text" name="Payment_Method" id="Payment_Method" placeholder="Enter Payment Method Value">
+            <input type="text" name="Payment_Method" id="Payment_Method" placeholder="Enter Payment Method Value" required>
             <br>
-            <input type="text" name="Churn_Label" id="Churn_Label" placeholder="Enter Churn Label">
-            <br>
-            <input type="text" name="customerID" id="customerID" placeholder="Enter customer ID">
-            <br>
-            <button class="button primary" type="submit">Import</button>
+            <button class="button primary" type="submit">Add</button>
         </form>
     </div>
     <div class="dialog-actions">

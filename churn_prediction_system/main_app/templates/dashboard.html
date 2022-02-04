@@ -4,200 +4,490 @@
 {%  include 'home_base_user.html' %}
 {% endif %}
 {% block content %}
-<!-- <script type="text/javascript">
-    google.charts.load("current", {packages:["corechart"]});
-    google.charts.setOnLoadCallback(drawChart);
-    var month_to_month = 0;
-    function drawChart() {
-        //Arrays
-    var contract_data = google.visualization.arrayToDataTable([
-        ['Response', 'Number of Response'],
-        ['Month to Month',     11],
-        ['One Year',      2],
-        ['Two Year',      2],
-    ]);
-    var device_protection_data = google.visualization.arrayToDataTable([
-        ['Response', 'Number of Response'],
-        ['Yes',     10],
-        ['No',      10],
-    ]);
+<script src="https://code.jscharting.com/latest/jscharting.js"></script>
 
-    //Options
-    var contract_options = {
-        title: 'Contract',
-        pieHole: 0.4,
-    };
-    var device_protecttio_options = {
-        title: 'Device Protection',
-        pieHole: 0.4,
-    };
-
-    //visual representation
-    var contract = new google.visualization.PieChart(document.getElementById('contract'));
-    contract.draw(contract_data, contract_options);
-
-    var device_protection = new google.visualization.PieChart(document.getElementById('device_protection'));
-    device_protection.draw(device_protection_data, device_protecttio_options);
-    }
-</script> -->
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  <script type="text/javascript">
-    google.charts.load("current", {packages:['corechart']});
-    google.charts.setOnLoadCallback(drawChart);
-    function drawChart() {
-      var data1 = google.visualization.arrayToDataTable([
-        ["Element", "Density", { role: "style" } ],
-        ["Copper", 8.94, "#b87333"],
-        ["Silver", 10.49, "silver"],
-        ["Gold", 19.30, "gold"],
-        ["Platinum", 21.45, "color: #e5e4e2"]
-      ]);
-
-      var data2 = google.visualization.arrayToDataTable([
-        ["Element", "Density", { role: "style" } ],
-        ["Copper", 8.94, "#b87333"],
-        ["Silver", 10.49, "silver"],
-        ["Gold", 19.30, "gold"],
-        ["Platinum", 21.45, "color: #e5e4e2"]
-      ]);
-      var data3 = google.visualization.arrayToDataTable([
-          ['Task', 'Hours per Day'],
-          ['Work',     11],
-          ['Eat',      2],
-          ['Commute',  2],
-          ['Watch TV', 2],
-          ['Sleep',    7]
-        ]);
-
-      var view1 = new google.visualization.DataView(data1);
-      view1.setColumns([0, 1,
-                       { calc: "stringify",
-                         sourceColumn: 1,
-                         type: "string",
-                         role: "annotation" },
-                       2]);
-      var view2 = new google.visualization.DataView(data2);
-      view2.setColumns([0, 1,
-                       { calc: "stringify",
-                         sourceColumn: 1,
-                         type: "string",
-                         role: "annotation" },
-                       2]);
-
-      var options = {
-        title: "Density of Precious Metals, in g/cm^3",
-        width: 600,
-        height: 400,
-        bar: {groupWidth: "95%"},
-        legend: { position: "none" },
-      };
-      var options2 = {
-          title: 'My Daily Activities',
-          pieHole: 0.4,
-        };
-
-      var chart = new google.visualization.ColumnChart(document.getElementById("column1"));
-      chart.draw(view1, options);
-
-      var chart = new google.visualization.ColumnChart(document.getElementById("column2"));
-      chart.draw(view2, options);
-
-      var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
-        chart.draw(data3, options2);
-
-        var chart = new google.visualization.PieChart(document.getElementById('donutchart2'));
-        chart.draw(data3, options2);
-  }
-  </script>
-
-<div style="display: flex; margin-top: 10px;">
+<div style="display: flex; margin: 10px;">
     <!-- <div id="contract" style="width: 900px; height: 500px; float: left;"></div>
     <div id="device_protection" style="width: 900px; height: 500px; float: left;"></div> -->
     <div style="width: 50%; height: 100vh; padding: 5px;">
         <div style="display: flex;">
-            <div style="width: 40%; padding: 5px;">
-                <select data-role="select">
-                    <optgroup label="Physical servers">
-                        <option value="dedicated_corei3_hp">Core i3 (hp)</option>
-                        <option value="dedicated_pentium_hp">Pentium (hp)</option>
-                        <option value="dedicated_smart_corei3_hp">Smart Core i3 (hp)</option>
-                    </optgroup>
-                    <optgroup label="Virtual hosting">
-                        <option value="mini">Mini</option>
-                        <option value="site">Site</option>
-                        <option value="portal">Portal</option>
-                    </optgroup>
-                    <optgroup label="Virtual servers">
-                        <option value="evps0">eVPS-TEST (30 дней)</option>
-                        <option value="evps1" selected="selected">eVPS-1</option>
-                        <option value="evps2">eVPS-2</option>
-                    </optgroup>
+            <div style="width: 100%; padding: 5px; display: flex; padding: 10px;">
+                <div style="width: 50%; padding: 5px;">
+                    <br>
+                    <br>
+                <select data-role="select" id="batch_list" style="margin-top: 6px;">
+                        <option value="select_batch">Select Batch</option>
+                        {% for value in visuals %}
+                            <option id="{{value.batch_size}}" value="{{value.visual_id}}">{{value.visual_id}} -  {{value.date_created}}({{value.batch_size}}) </option>
+                        {% endfor %}
+                        
                 </select>
-                <br>    
-                <div class="icon-box border bd-default">
+                </div>
+
+                <div style="width: 50%; display: flex; padding: 5px;">
+                <div class="icon-box border bd-default" style="width: 100%;">
                     <!-- <div class="icon bg-cyan fg-white"><span class="mif-cog"></span></div> -->
                     <div class="content p-4">
                         <div class="text-upper">TOTAL CASES</div>
-                        <div class="text-upper text-bold text-lead">7043</div>
+                        <div class="text-upper text-bold text-lead" id="total_cases">0</div>
                     </div>
                 </div>
                 <br>
-                <div class="icon-box border bd-default">
+                <div class="icon-box border bd-default" style="width: 100%;">
                     <!-- <div class="icon bg-cyan fg-white"><span class="mif-cog"></span></div> -->
                     <div class="content p-4">
                         <div class="text-upper">TOTAL CHURNS</div>
-                        <div class="text-upper text-bold text-lead">1869</div>
+                        <div class="text-upper text-bold text-lead" id="total_churns">0</div>
                     </div>
                 </div>
             </div>
-            <div style="width: 60%; padding: 5px;">
-                <div id="column1"></div>
             </div>
         </div>
-        <div style="width: 100%;">
-            <div id="column2"></div>
+        <div style="padding: 5px; border: 1px solid gainsboro; height: 50%; background-color: white;">
+            <div id="top_5" style="max-width: 100%;height: 50%;margin: 0px auto;"></div>
+            <!-- <div id="chartDiv" style="max-width: 100%; height: 50%; margin: 0px auto;"></div> -->
         </div>
+        <!-- <div style="width: 100%;">
+            <div id="column2"></div>
+        </div> -->
     </div>
-    <div style="width: 50%; height: 100vh; display: flex; padding: 5px;">
-        <div style="width: 30%;">
-            <div class="more-info-box bg-green fg-white">
+    <div style="width: 50%; height: 100vh; padding: 5px;">
+        <div style="width: 100%; padding: 5px; display: flex;">
+            <div class="more-info-box bg-green fg-white" style="width: 100%; background-color: white;">
                 <div class="content">
-                    <h2 class="text-bold mb-0">1000</h2>
+                    <h2 class="text-bold mb-0" id="partner">0</h2>
                     <div>PARTNER</div>
                 </div>
                 <div class="icon">
-                    <span class="mif-chart-bars"></span>
+                    <span class="mif-users"></span>
                 </div>
                 <!-- <a href="#" class="more"> More info <span class="mif-arrow-right"></span></a> -->
             </div>
             <br>
-            <div class="more-info-box bg-blue fg-white">
+            <div class="more-info-box bg-blue fg-white" style="width: 100%;">
                 <div class="content">
-                    <h2 class="text-bold mb-0">1000</h2>
+                    <h2 class="text-bold mb-0" id="dependents">0</h2>
                     <div>DEPENDENTS</div>
                 </div>
                 <div class="icon">
-                    <span class="mif-chart-bars"></span>
+                    <span class="mif-done"></span>
                 </div>
                 <!-- <a href="#" class="more"> More info <span class="mif-arrow-right"></span></a> -->
             </div>
             <br>
-            <div class="more-info-box bg-orange fg-white">
+            <div class="more-info-box bg-orange fg-white" style="width: 100%;">
                 <div class="content">
-                    <h2 class="text-bold mb-0">1000</h2>
+                    <h2 class="text-bold mb-0" id="senior_citizen">0</h2>
                     <div>SENIOR CITIZEN</div>
                 </div>
                 <div class="icon">
-                    <span class="mif-chart-bars"></span>
+                    <span class="mif-accessible"></span>
                 </div>
                 <!-- <a href="#" class="more"> More info <span class="mif-arrow-right"></span></a> -->
             </div>
         </div>
-        <div style="width: 70%;">
-            <div id="donutchart" style="width: 900px; height: 500px;"></div>
-            <div id="donutchart2" style="width: 900px; height: 500px;"></div>
+        <div style="width: 100%; padding: 5px;  border: 1px solid gainsboro; background-color: white;">
+            <div id="multiple_line" style="max-width: 100%;height: 100px;margin: 0px auto;"></div>
+            <div id="internet_service" style="max-width: 100%;height: 100px;margin: 0px auto;"></div>
+            <div id="online_security" style="max-width: 100%;height: 100px;margin: 0px auto;"></div>
+            <div id="online_backup" style="max-width: 100%;height: 100px;margin: 0px auto;"></div>
+            <div id="device_protection" style="max-width: 100%;height: 100px;margin: 0px auto;"></div>
+            <div id="tech_support" style="max-width: 100%;height: 100px;margin: 0px auto;"></div>
+            <div id="streaming_tv" style="max-width: 100%;height: 100px;margin: 0px auto;"></div>
+            <div id="streaming_movie" style="max-width: 100%;height: 100px;margin: 0px auto;"></div>
+            <div id="contract" style="max-width: 100%;height: 100px;margin: 0px auto;"></div>
+            <div id="paperless_billing" style="max-width: 100%;height: 100px;margin: 0px auto;"></div>
+            <div id="payment_method" style="max-width: 100%;height: 100px;margin: 0px auto;"></div>
+            <!-- <div id="churn_label" style="max-width: 100%;height: 100px;margin: 0px auto;"></div> -->
         </div>
     </div>   
 </div>
+<input type="hidden" id="multiple_lines_no">
+<script>
+  let multiple_lines = {"1":0,"2":0,"3":0}
+  let internet_service = {"1":0,"2":0,"3":0}
+  let online_security = {"1":0,"2":0,"3":0}
+  let online_backup = {"1":0,"2":0,"3":0}
+  let device_protection = {"1":0,"2":0,"3":0}
+  let tech_support = {"1":0,"2":0,"3":0}
+  let streaming_tv = {"1":0,"2":0,"3":0}
+  let streaming_movies = {"1":0,"2":0,"3":0}
+  let contract = {"1":0,"2":0,"3":0}
+  let paperless_billing = {"1":0,"2":0}
+  let payment_method = {"1":0,"2":0,"3":0,"4":0}
 
+    function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    const cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      // Does this cookie string begin with the name we want?
+      if (cookie.substring(0, name.length + 1) === (name + "=")) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
+    $('#batch_list').change(function() {
+      var batch_size = $(this).children(":selected").attr("id");
+        if($(this).val() == "select_batch")
+            $('#total_cases').html("0");
+        else
+            $('#total_cases').html(batch_size);
+            $.ajax({
+                url: "{% url 'ajax' %}",
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify({"batch_id": $(this).val(),}),
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRFToken": getCookie("csrftoken"),  // don't forget to include the 'getCookie' function
+                },
+                success: (data) => {
+                    $('#total_churns').html(data["total_churns"]);
+                    $('#partner').text(data["partner"]);
+                    $('#dependents').text(data["dependents"]);
+                    $('#senior_citizen').text(data["senior_citizen"]);
+
+                },
+                error: (error) => {
+                    console.log(error);
+                }
+                });
+                
+                // Tenure
+                $.ajax({
+                url: "{% url 'get_services' %}",
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify({"batch_id": $(this).val(),}),
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "X-CSRFToken": getCookie("csrftoken"),  // don't forget to include the 'getCookie' function
+                },
+                success: (data) => {
+                  multiple_lines = {"1":0,"2":0,"3":0}
+                  internet_service = {"1":0,"2":0,"3":0}
+                  online_security = {"1":0,"2":0,"3":0}
+                  online_backup = {"1":0,"2":0,"3":0}
+                  device_protection = {"1":0,"2":0,"3":0}
+                  tech_support = {"1":0,"2":0,"3":0}
+                  streaming_tv = {"1":0,"2":0,"3":0}
+                  streaming_movies = {"1":0,"2":0,"3":0}
+                  contract = {"1":0,"2":0,"3":0}
+                  paperless_billing = {"1":0,"2":0}
+                  payment_method = {"1":0,"2":0,"3":0,"4":0}
+                  traverse_data(data,multiple_lines,"Multiple_Lines")
+                  traverse_data(data,internet_service,"Internet_Service")
+                  traverse_data(data,online_security,"Online_Security")
+                  traverse_data(data,online_backup,"Online_Backup")
+                  traverse_data(data,device_protection,"Device_Protection")
+                  traverse_data(data,tech_support,"Tech_Support")
+                  traverse_data(data,streaming_tv,"Streaming_TV")
+                  traverse_data(data,streaming_movies,"Streaming_Movies")
+                  traverse_data(data,contract,"Contract")
+                  traverse_data(data,paperless_billing,"Paperless_Billing")
+                  traverse_data(data,payment_method,"Payment_Method")
+
+                  $("#multiple_line").delay(2000).animate({
+                        height: 'hide'
+                    });
+                  $("#internet_service").delay(2000).animate({
+                        height: 'hide'
+                    });
+                  $("#online_security").delay(2000).animate({
+                        height: 'hide'
+                    });
+                  $("#online_backup").delay(2000).animate({
+                        height: 'hide'
+                    });
+                  $("#device_protection").delay(2000).animate({
+                        height: 'hide'
+                    });
+                  $("#tech_support").delay(2000).animate({
+                        height: 'hide'
+                    });
+                  $("#streaming_tv").delay(2000).animate({
+                        height: 'hide'
+                    });
+                  $("#streaming_movie").delay(2000).animate({
+                        height: 'hide'
+                    });
+                  $("#contract").delay(2000).animate({
+                        height: 'hide'
+                    });
+                  $("#paperless_billing").delay(2000).animate({
+                        height: 'hide'
+                    });
+                  $("#payment_method").delay(2000).animate({
+                        height: 'hide',
+                    });
+
+
+                  $("#multiple_line").delay(2000).animate({
+                        height: 'show',
+                    });
+                  $("#internet_service").delay(2000).animate({
+                        height: 'show',
+                    });;
+                  $("#online_security").delay(2000).animate({
+                        height: 'show',
+                    });
+                  $("#online_backup").delay(2000).animate({
+                        height: 'show',
+                    });
+                  $("#device_protection").delay(2000).animate({
+                        height: 'show',
+                    });
+                  $("#tech_support").delay(2000).animate({
+                        height: 'show',
+                    });
+                  $("#streaming_tv").delay(2000).animate({
+                        height: 'show',
+                    });
+                  $("#streaming_movie").delay(2000).animate({
+                        height: 'show',
+                    });
+                  $("#contract").delay(2000).animate({
+                        height: 'show',
+                    });
+                  $("#paperless_billing").delay(2000).animate({
+                        height: 'show',
+                    });
+                  $("#payment_method").delay(2000).animate({
+                        height: 'show',
+                    });
+                },
+                error: (error) => {
+                    console.log(error);
+                }
+                });
+});
+
+
+
+function create_bar_chart(label_text,title_label_text,series_list,chart_id){
+        var chart = JSC.chart(chart_id, {
+        debug: true,
+        type: 'horizontal column',
+        palette: 'fiveColor7',
+        yAxis: {
+          scale_type: 'stacked',
+          label_text: title_label_text
+        },
+        defaultPoint_outline_color: 'darkenMore',
+        title_label_text: label_text,
+        xAxis_label_text: "",
+
+        series: series_list
+      });
+    }
+
+    setInterval(function() {
+    //Arrays of Services
+    multiple_line_list = [
+        //Multiple Lines
+        {name: 'No',id: 's1',points: [{x: 'Multiple<br>Lines', y: multiple_lines['1']}]},
+        {name: 'No<br>Phone',points: [{ x: 'Multiple<br>Lines', y: multiple_lines['2']}]},
+        {name: 'Yes',points: [{ x: 'Multiple<br>Lines', y: multiple_lines['3']}]},
+    ]
+
+    internet_service_list = [
+         //Internet Service
+        {name: 'DSL',id: 's2',points: [{x: 'Internet<br>Service', y: internet_service['1']}]},
+        {name: 'Fiber<br>Optic',points: [{ x: 'Internet<br>Service', y: internet_service['2'] },]},
+        {name: 'No',points: [{ x: 'Internet<br>Service', y: internet_service['3'] },]},
+    ]
+
+    online_security_list = [
+         //Online Security
+        {name: 'DSL',id: 's2',points: [{x: 'Online<br>Security', y: online_security['1']}]},
+        {name: 'Fiber<br>Optic',points: [{ x: 'Online<br>Security', y: online_security['2'] },]},
+        {name: 'No',points: [{ x: 'Online<br>Security', y: online_security['3'] },]},
+    ]
+
+    online_backup_list = [
+         //Online Backup
+        {name: 'DSL',id: 's2',points: [{x: 'Online<br>Backup', y: online_backup['1']}]},
+        {name: 'Fiber<br>Optic',points: [{ x: 'Online<br>Backup', y: online_backup['2'] },]},
+        {name: 'No',points: [{ x: 'Online<br>Backup', y: online_backup['3'] },]},
+    ]
+
+    device_protection_list = [
+         //Device Protection
+        {name: 'DSL',id: 's2',points: [{x: 'Device<br>Protection', y: device_protection['1']}]},
+        {name: 'Fiber<br>Optic',points: [{ x: 'Device<br>Protection', y:device_protection['2'] },]},
+        {name: 'No',points: [{ x: 'Device<br>Protection', y: device_protection['3'] },]},
+    ]
+
+    tech_support_list = [
+         //Tech Support
+        {name: 'DSL',id: 's2',points: [{x: 'Tech<br>Support', y: tech_support['1']}]},
+        {name: 'Fiber<br>Optic',points: [{ x: 'Tech<br>Support', y: tech_support['2'] },]},
+        {name: 'No',points: [{ x: 'Tech<br>Support', y: tech_support['3'] },]},
+    ]
+
+    streaming_tv_list = [
+         //Streaming TV
+        {name: 'DSL',id: 's2',points: [{x: 'Streaming<br>TV', y: streaming_tv['1']}]},
+        {name: 'Fiber<br>Optic',points: [{ x: 'Streaming<br>TV', y:  streaming_tv['2'] },]},
+        {name: 'No',points: [{ x: 'Streaming<br>TV', y: streaming_tv['3'] },]},
+    ]
+
+    streaming_movie_list = [
+         //Streaming Movie
+        {name: 'DSL',id: 's2',points: [{x: 'Streaming<br>Movie', y:streaming_movies['1']}]},
+        {name: 'Fiber<br>Optic',points: [{ x: 'Streaming<br>Movie', y: streaming_movies['2'] },]},
+        {name: 'No',points: [{ x: 'Streaming<br>Movie', y: streaming_movies['3'] },]},
+    ]
+
+    contract_list = [
+         //Contract
+        {name: 'Month<br>to<br>Month',id: 's2',points: [{x: 'Contract', y: contract['1']}]},
+        {name: 'One<br>Year',points: [{ x: 'Contract', y: contract['2'] },]},
+        {name: 'Two<br>Years',points: [{ x: 'Contract', y: contract['3'] },]},
+    ]
+
+    paperless_billing_list = [
+         //Paperless Billing
+        {name: 'No',id: 's2',points: [{x: 'Paperless<br>Billing', y: paperless_billing['1']}]},
+        {name: 'Yes',points: [{ x: 'Paperless<br>Billing', y: paperless_billing['2'] },]},
+    ]
+
+    payment_method_list = [
+         //Payment Method
+        {name: 'Bank<br>Transfer',id: 's2',points: [{x: 'Payment<br>Method', y: payment_method['1']}]},
+        {name: 'Credit<br>Card',points: [{ x: 'Payment<br>Method', y: payment_method['2'] },]},
+        {name: 'Electronic<br>Check',points: [{ x: 'Payment<br>Method', y: payment_method['3'] },]},
+        {name: 'Mailed<br>Check',points: [{ x: 'Payment<br>Method', y: payment_method['4'] },]},
+    ]
+
+    top5_list = [
+         //Payment Method
+        {name: 'Contract',id: 's2',points: [{x: 'Top 5', y: 32}]},
+        {name: 'Tenure',points: [{ x: 'Top 5', y: 19 },]},
+        {name: 'Monthly<br>Charges',points: [{ x: 'Top 5', y: 16 },]},
+        {name: 'Internet<br>Services',points: [{ x: 'Top 5', y: 10 },]},
+        {name: 'Payment<br>Method',points: [{ x: 'Top 5', y: 4 },]},
+    ]
+
+    // churn_label_list = [
+    //      //Churn Label
+    //     {name: 'No',id: 's2',points: [{x: 'Churn<br>Label', y: churn_label['1']}]},
+    //     {name: 'Yes',points: [{ x: 'Churn<br>Label', y: churn_label['2']}]},
+    // ]
+    
+    create_bar_chart("","Number",multiple_line_list,"multiple_line")
+    create_bar_chart("","Number",internet_service_list,"internet_service")
+    create_bar_chart("","Number",online_security_list,"online_security")
+    create_bar_chart("","Number",online_backup_list,"online_backup")
+    create_bar_chart("","Number",device_protection_list,"device_protection")
+    create_bar_chart("","Number",tech_support_list,"tech_support")
+    create_bar_chart("","Number",streaming_tv_list,"streaming_tv")
+    create_bar_chart("","Number",streaming_movie_list,"streaming_movie")
+    create_bar_chart("","Number",contract_list,"contract")
+    create_bar_chart("","Number",paperless_billing_list,"paperless_billing")
+    create_bar_chart("","Number",payment_method_list,"payment_method")
+    create_bar_chart("<b>Top 5 Churn Factors Determined By Machine Learning</b>","Number",top5_list,"top_5")
+    // create_bar_chart("","Number",churn_label_list,"churn_label")
+    },5000)
+
+
+    // var logos = {
+    //     facebook: {
+    //       color: '#385C8E',
+    //       d:
+    //         'M12.7 25.6H18v21.7c0 .4.3.8.8.8h8.9c.4 0 .8-.3.8-.8V25.7h6c.4 0 .7-.3.8-.7l.9-8c0-.2 0-.4-.2-.6-.1-.2-.4-.3-.6-.3h-7v-5c0-1.5.8-2.3 2.4-2.3h4.6c.4 0 .8-.3.8-.8V.8c0-.4-.3-.8-.8-.8h-6.3-.3c-1.1 0-4.9.2-7.9 3-3.3 3-2.9 6.7-2.7 7.3v5.8h-5.5c-.4 0-.8.3-.8.8v7.9c0 .4.3.8.8.8z'
+    //     },
+    //     instagram: {
+    //       color: '#cd486b',
+    //       d:
+    //         'M34.8 0H13.2C5.9 0 0 5.9 0 13.2v21.5C0 42.1 5.9 48 13.2 48h21.5C42.1 48 48 42.1 48 34.8V13.2C48 5.9 42.1 0 34.8 0zm0 43.7H13.2c-5 0-9-4-9-9V13.2c0-5 4-9 9-9h21.5c5 0 9 4 9 9v21.5c0 5-4 9-8.9 9zM24 11.6c-6.8 0-12.4 5.5-12.4 12.4 0 6.8 5.5 12.4 12.4 12.4S36.4 30.8 36.4 24c0-6.8-5.6-12.4-12.4-12.4zm0 20.5c-4.5 0-8.1-3.6-8.1-8.1s3.6-8.1 8.1-8.1 8.1 3.6 8.1 8.1-3.6 8.1-8.1 8.1zM36.9 8c-.8 0-1.6.3-2.2.9-.6.6-.9 1.4-.9 2.2 0 .8.3 1.6.9 2.2.6.6 1.4.9 2.2.9.8 0 1.6-.3 2.2-.9.6-.6.9-1.4.9-2.2 0-.8-.3-1.6-.9-2.2-.6-.5-1.4-.9-2.2-.9z'
+    //     },
+    //     twitter: {
+    //       color: '#73A1FB',
+    //       d:
+    //         'M46.9 8.9c-.8.3-1.5.6-2.3.8.9-1.1 1.7-2.3 2.1-3.7.1-.3 0-.6-.3-.8-.2-.2-.6-.2-.9 0-1.7 1-3.5 1.7-5.4 2.1-1.9-1.9-4.5-2.9-7.2-2.9-5.7 0-10.3 4.6-10.3 10.3 0 .4 0 .9.1 1.3-7.1-.6-13.6-4.1-18.1-9.6-.2-.2-.4-.3-.7-.3-.3 0-.5.2-.6.4-.9 1.5-1.4 3.3-1.4 5.2 0 2.5.9 4.8 2.5 6.7-.5-.2-.9-.4-1.4-.7-.2-.1-.5-.1-.8 0-.2.1-.4.4-.4.7v.1c0 3.7 2 7 5 8.9-.3 0-.5-.1-.8-.1-.3-.1-.5 0-.7.2-.2.2-.2.5-.2.7 1.1 3.5 4 6.1 7.5 6.9C9.9 37 6.5 38 3 38c-.7 0-1.5 0-2.2-.1-.4 0-.7.2-.8.5-.1.3 0 .7.3.9 4.5 2.9 9.7 4.4 15 4.4 10.5 0 17.1-4.9 20.7-9.1 4.6-5.2 7.2-12 7.2-18.8v-.9c1.8-1.4 3.3-3 4.6-4.9.2-.3.2-.7-.1-.9-.1-.3-.5-.4-.8-.2z'
+    //     },
+    //     pinterest: {
+    //       color: '#D7143A',
+    //       d:
+    //         'M38 4.9C34.7 1.7 30.1 0 25.1 0c-7.6 0-12.3 3.1-14.9 5.8-3.2 3.2-5 7.5-5 11.8 0 5.3 2.2 9.4 6 11 .3.1.5.2.8.2.8 0 1.4-.5 1.6-1.3.1-.5.4-1.6.5-2.2.3-1 .1-1.5-.5-2.2-1.1-1.3-1.6-2.8-1.6-4.8 0-5.9 4.4-12.1 12.4-12.1 6.4 0 10.4 3.6 10.4 9.5 0 3.7-.8 7.1-2.2 9.7-1 1.8-2.8 3.8-5.5 3.8-1.2 0-2.2-.5-2.9-1.3-.6-.8-.8-1.8-.6-2.9.3-1.2.7-2.5 1.1-3.7.7-2.2 1.3-4.3 1.3-6 0-2.9-1.8-4.8-4.4-4.8-3.3 0-6 3.4-6 7.7 0 2.1.6 3.7.8 4.3-.4 1.7-2.9 12.3-3.4 14.3-.3 1.2-1.9 10.4.8 11.1 3.1.8 5.8-8.1 6.1-9.2.2-.8 1-3.9 1.5-5.9 1.5 1.4 3.9 2.4 6.2 2.4 4.4 0 8.3-2 11.1-5.5 2.7-3.5 4.2-8.3 4.2-13.6 0-4.1-1.8-8.2-4.9-11.2z'
+    //     },
+    //     tumblr: {
+    //       color: '#1D3366',
+    //       d:
+    //         'M38.7 36.7c-.2-.1-.6-.1-.8 0-2.2 1.4-4.4 2.2-6.6 2.2-1.2 0-2.2-.3-3.1-.8-.6-.4-1-.8-1.3-1.4-.2-.5-.4-1.7-.4-4.9V20.6h10.2c.4 0 .8-.3.8-.8v-7.3c0-.4-.3-.8-.8-.8H26.5V.7c0-.4-.3-.8-.8-.8h-6.6c-.4 0-.7.3-.8.7-.3 2.3-.8 4.2-1.5 5.7S15.1 9 13.9 10s-2.7 1.8-4.4 2.4c-.3.1-.5.4-.5.7v6.6c0 .4.3.8.8.8h4.4V36c0 2.2.2 3.9.7 5.1.5 1.2 1.4 2.4 2.6 3.5 1.2 1.1 2.7 1.9 4.4 2.4 1.7.6 3.7.8 5.9.8 1.9 0 3.7-.2 5.4-.6 1.7-.4 3.5-1.1 5.5-2 .3-.1.4-.4.4-.7v-7.3c0-.1-.2-.4-.4-.5z'
+    //     }
+    //   };
+    //   var chart = JSC.chart('chartDiv', {
+    //     debug: true,
+    //     defaultSeries_type: 'column',
+    //     title_label_text: 'US Social Network Users in 2016',
+    //     yAxis: {
+    //       defaultTick_enabled: false,
+    //       scale_range_padding: 0.15
+    //     },
+    //     legend_visible: false,
+    //     toolbar_visible: false,
+    //     series: [
+    //       {
+    //         name: 'Social Network Users',
+    //         color: 'turquoise',
+    //         defaultPoint: {
+    //           marker: {
+    //             visible: true,
+    //             size: 40,
+    //             outline_width: 0
+    //           },
+    //           label: { text: '%valueM' }
+    //         },
+
+    //         points: [
+    //           {
+    //             name: 'Facebook',
+    //             y: 166.8,
+    //             marker: { fill: logos['facebook'].color, type: { path: logos['facebook'].d } }
+    //           },
+    //           {
+    //             name: 'Instagram',
+    //             y: 67.2,
+    //             marker: { fill: logos['instagram'].color, type: { path: logos['instagram'].d } }
+    //           },
+    //           {
+    //             name: 'Twitter',
+    //             y: 52.2,
+    //             marker: { fill: logos['twitter'].color, type: { path: logos['twitter'].d } }
+    //           },
+    //           {
+    //             name: 'Pinterest',
+    //             y: 54.3,
+    //             marker: { fill: logos['pinterest'].color, type: { path: logos['pinterest'].d } }
+    //           },
+    //           { name: 'Tumblr', y: 23.2, marker: { fill: logos['tumblr'].color, type: { path: logos['tumblr'].d } } }
+    //         ]
+    //       }
+    //     ]
+    //   });
+
+
+function traverse_data(data,service_object,service_name){
+    Object.values(data).forEach(val => 
+        Object.values(val).forEach(val2 => 
+            Object.entries(val2).forEach(([key, val3]) => {
+                if(key == service_name)   
+                      {
+
+                            service_object[val3] += 1
+                      }
+                        
+                  })
+                )
+            );
+}
+</script>
 {% endblock %}

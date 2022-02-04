@@ -37,7 +37,10 @@ urlpatterns = [
     path('delete_batch/',views.delete_batch,),
     path('delete_customer/',views.delete_customer,),
     path('edit_user/',views.edit_user,),
+    path('add_customers/',views.add_customer, name="add_customers"),
     path('batch_list/',views.batch_list, name="batch_list"),
     path('export_customer/',views.export_customer, name="export_customer"),
+    path('ajax/', views.total_churns, name='ajax'),
+    path('get_services/', views.get_services, name='get_services'),
 ]
 

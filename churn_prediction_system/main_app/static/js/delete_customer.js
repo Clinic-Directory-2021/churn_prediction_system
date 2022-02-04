@@ -1,4 +1,4 @@
-ID;
+var ID;
 current_id;
 function delete_customer_get(ID,current_id){
     this.ID = ID

@@ -17,7 +17,7 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 
 # from django.shortcuts import render_to_response
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponse, HttpResponseBadRequest, JsonResponse
 from django import forms
 from django.template import RequestContext
 import django_excel as excel
@@ -66,16 +66,14 @@ def login_user(request):
     return render(request,'login_user.html')
 
 def dashboard(request):
-    visuals = firestoreDB.collection(u'visuals')
-    services_list = {
-
-    }
-    docs = visuals.get()
-    for doc in docs:
-        services = visuals.document(doc.id).collection(u'services').document(doc.id).get()
-        services_list[doc.id] = services.to_dict()
-    print(services_list)
-    return render(request,'dashboard.html',{'services':services_list})
+    try:
+        visuals = firestoreDB.collection(u'visuals')
+        visual_docs = visuals.get()
+        return render(request,'dashboard.html',{'visuals':[doc.to_dict() for doc in visual_docs]})
+    except:
+        visuals = firestoreDB.collection(u'visuals')
+        visual_docs = visuals.get()
+        return render(request,'dashboard.html',{'visuals':[doc.to_dict() for doc in visual_docs]})
 
 def customers(request):
     try:
@@ -357,7 +355,68 @@ def batch_list(request):
     customer = firestoreDB.collection(u'visuals').document(current_id).collection(u'customer').get()
     return render(request,'batch_list.html',{'customer':[data.to_dict() for data in customer],"current_id":current_id})
 
-#  def add_customer(request):
+def add_customer(request):
+    current_id = request.GET.get('current_id')
+    customerID = request.POST.get('customerID')
+    Tenure = request.POST.get('Tenure')
+    MonthlyCharges = request.POST.get('MonthlyCharges')
+    TotalCharges = request.POST.get('TotalCharges')
+    Senior_Citizen = request.POST.get('Senior_Citizen')
+    Partner = request.POST.get('Partner')
+    Dependents = request.POST.get('Dependents')
+    Phone_Service = request.POST.get('Phone_Service')
+    Multiple_Lines = request.POST.get('Multiple_Lines')
+    Internet_Service = request.POST.get('Internet_Service')
+    Online_Security = request.POST.get('Online_Security')
+    Online_Backup = request.POST.get('Online_Backup')
+    Device_Protection = request.POST.get('Device_Protection')
+    Tech_Support = request.POST.get('Tech_Support')
+    Streaming_TV = request.POST.get('Streaming_TV')
+    Streaming_Movies = request.POST.get('Streaming_Movies')
+    Contract = request.POST.get('Contract')
+    Paperless_Billing = request.POST.get('Paperless_Billing')
+    Payment_Method = request.POST.get('Payment_Method')
+
+    rs.rule_set(customerID,int(Tenure),int(MonthlyCharges),int(TotalCharges),Senior_Citizen,
+                    Partner,Dependents,Multiple_Lines,Internet_Service,Online_Security,
+                    Online_Backup,Device_Protection,Tech_Support,Streaming_TV,Streaming_Movies,
+                    Contract,Paperless_Billing,Payment_Method)
+    print(current_id)
+    visuals = firestoreDB.collection(u'visuals')
+    get_visual = visuals.get()
+    batch_size = 0
+    for doc in get_visual:
+        if(doc.id == current_id):
+            batch_size = int(doc.to_dict()['batch_size'])
+    # visuals.document(current_id).update({"batch_size":str(batch_size + 1)})
+    
+    data = {
+        "ID":str(batch_size),
+        "customerID":customerID,
+        "Tenure":Tenure,
+        "MonthlyCharges":MonthlyCharges,
+        "TotalCharges":TotalCharges,
+        "Senior_Citizen":Senior_Citizen,
+        "Partner":Partner,
+        "Dependents":Dependents,
+        "Multiple_Lines":Multiple_Lines,
+        "Internet_Service":Internet_Service,
+        "Online_Security":Online_Security,
+        "Online_Backup":Online_Backup,
+        "Device_Protection":Device_Protection,
+        "Tech_Support":Tech_Support,
+        "Streaming_TV":Streaming_TV,
+        "Streaming_Movies":Streaming_Movies,
+        "Contract":Contract,
+        "Paperless_Billing":Paperless_Billing,
+        "Payment_Method":Payment_Method,
+        "Churn_Label": rs.get_churn(),
+    }
+
+    
+    visuals.document(current_id).collection('customer').document(str(batch_size)).set(data)
+
+    return redirect('/batch_list/?current_id='+current_id)
 def delete_user(request):
     uid = request.GET.get('uid')
     user_id = request.GET.get('user_id')
@@ -457,4 +516,43 @@ def export_customer(request):
     if pisa_status.err:
        return HttpResponse('We had some errors <pre>' + html + '</pre>')
     return response
+
+def total_churns(request):
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+
+    if is_ajax:
+        if request.method == 'POST':
+            data = json.load(request)
+            current_id = data.get('batch_id')
+            customers = firestoreDB.collection(u'visuals').document(current_id).collection('customer').get()
+            total_churns = 0
+            partner = 0
+            dependents = 0
+            senior_citizen = 0
+            for doc in customers:
+                if doc.to_dict()['Churn_Label'] == "Yes":
+                    total_churns += 1
+                if doc.to_dict()['Partner'] == "2":
+                    partner += 1
+                if doc.to_dict()['Dependents'] == "2":
+                    dependents += 1
+                if doc.to_dict()['Senior_Citizen'] == "2":
+                    senior_citizen += 1
+            return JsonResponse({'total_churns': total_churns,"partner":partner,"dependents":dependents,"senior_citizen":senior_citizen})
+        return JsonResponse({'status': 'Invalid request'}, status=400)
+    else:
+        return HttpResponseBadRequest('Invalid request')
      
+def get_services(request):
+    is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+
+    if is_ajax:
+        if request.method == 'POST':
+            data = json.load(request)
+            current_id = data.get('batch_id')
+            customers = firestoreDB.collection(u'visuals').document(current_id).collection('customer')
+            multiple_lines_no = customers.get()
+            return JsonResponse({'multiple_lines': [doc.to_dict() for doc in multiple_lines_no]})
+        return JsonResponse({'status': 'Invalid request'}, status=400)
+    else:
+        return HttpResponseBadRequest('Invalid request')
