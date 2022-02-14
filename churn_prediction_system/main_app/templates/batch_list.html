@@ -41,10 +41,7 @@
             <th class="sortable-column sort-asc">Paperless Billing</th>
             <th class="sortable-column sort-asc">Payment Method</th>
             <th class="sortable-column sort-asc">Churn Label</th>
-            {% if request.session.type == 'admin' %}
-            {% elif request.session.type == 'user' %}
             <th>Action</th>
-            {% endif %}
         </tr>
         </thead>
         <tbody>
@@ -74,13 +71,10 @@
             {% else %}
             <td  class="success">{{data.Churn_Label}}</td>
             {% endif %}
-            {% if request.session.type == 'admin' %}
-            {% elif request.session.type == 'user' %}
             <td>
                 <!-- <button class="button primary">Edit</button> -->
                 <button class="button alert" onclick="Metro.dialog.open('#delete_customer_dialog'), delete_customer_get('{{data.ID}}','{{current_id}}')">Delete</button>
             </td>
-            {% endif %}
         </tr>
             {%  endfor %}
         </tbody>

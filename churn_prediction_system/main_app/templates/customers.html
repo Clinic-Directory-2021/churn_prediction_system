@@ -31,10 +31,7 @@
             <td>{{data.date_created}}</td>
             <td>
                 <button class="button primary" onclick="to_batch_list('{{data.visual_id}}')">Open batch</button>
-                {% if request.session.type == 'admin' %}
-                {% elif request.session.type == 'user' %}
                 <button class="button alert" onclick=" Metro.dialog.open('#delete_batch_dialog'),delete_batch_get('{{data.visual_id}}')">Delete Batch</button>
-                {% endif %}
             </td>
         </tr>
             {%  endfor %}
@@ -75,7 +72,6 @@
 <script type="">
     function to_batch_list(visual_id){
         window.location.href = "../batch_list?current_id=" + visual_id
-        alert(visual_id)
     }
 </script>
 {% endblock %}

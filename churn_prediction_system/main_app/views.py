@@ -5,6 +5,7 @@ from django.shortcuts import redirect, render
 from datetime import datetime
 import calendar
 import time
+import xlwt
 
 import requests
 import json
@@ -495,27 +496,69 @@ def link_callback(uri, rel):
             return path
 
 def export_customer(request):
-    current_id = request.GET.get('current_id')
-    print(current_id)
-    batch = firestoreDB.collection(u'visuals').document(current_id)
-    customer = batch.collection('customer').get()
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=Customers' + str(datetime.now()) + '.xls'
+    wb = xlwt.Workbook(encoding='utf-8')
+    ws = wb.add_sheet('Responses')
+    row_num = 0
+    font_style = xlwt.XFStyle()
+    columns = [
+        '#',
+        'customerID',
+        'Tenure',
+        'MonthlyCharges',
+        'TotalCharges',
+        'Senior_Citizen',
+        'Partner',
+        'Dependents',
+        'Multiple_Lines',
+        'Internet_Service',
+        'Online_Security',
+        'Online_Backup',
+        'Device_Protection',
+        'Tech_Support',
+        'Streaming_TV',
+        'Streaming_Movies',
+        'Contract',
+        'Paperless_Billing',
+        'Payment_Method',
+        'Churn_Label',
 
-    template_path = 'upload_form/export_customer.html'
-    context = {'customers': [data.to_dict() for data in customer]}
-    # Create a Django response object, and specify content_type as pdf
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="output.pdf"'
-    # find the template and render it.
-    template = get_template(template_path)
-    html = template.render(context)
+        ]
+    for col_num in range(len(columns)):
+        ws.write(row_num, col_num, columns[col_num], font_style)
 
-    # create a pdf
-    pisa_status = pisa.CreatePDF(
-       html, dest=response, link_callback=link_callback)
-    # if error then show some funy view
-    if pisa_status.err:
-       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    visual_id = request.GET.get('current_id')
+    customer = firestoreDB.collection(u'visuals').document(visual_id).collection('customer').get()
+    row_num = 0
+    for doc in customer:
+        rows = {
+            str(0): row_num,
+            str(1): doc.to_dict()['customerID'],
+            str(2): doc.to_dict()['Tenure'],
+            str(3): doc.to_dict()['MonthlyCharges'],
+            str(4): doc.to_dict()['TotalCharges'],
+            str(5): doc.to_dict()['Senior_Citizen'],
+            str(6): doc.to_dict()['Dependents'],
+            str(7): doc.to_dict()['Multiple_Lines'],
+            str(8): doc.to_dict()['Internet_Service'],
+            str(9): doc.to_dict()['Online_Security'],
+            str(10): doc.to_dict()['Online_Backup'],
+            str(11): doc.to_dict()['Device_Protection'],
+            str(12): doc.to_dict()['Tech_Support'],
+            str(13): doc.to_dict()['Streaming_TV'],
+            str(14): doc.to_dict()['Streaming_Movies'],
+            str(15): doc.to_dict()['Contract'],
+            str(16): doc.to_dict()['Paperless_Billing'],
+            str(17): doc.to_dict()['Payment_Method'],
+            str(18): doc.to_dict()['Churn_Label']
+        }
+        row_num += 1
+        for col_num in range(len(rows)):
+            ws.write(row_num, col_num, rows.get(str(col_num)))
+    wb.save(response)
     return response
+
 
 def total_churns(request):
     is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
